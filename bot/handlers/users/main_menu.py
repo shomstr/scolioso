@@ -9,7 +9,7 @@ from asyncpg.pgproto.pgproto import timedelta
 
 from bot.database.models import User
 from bot.enums.menus import MainMenu
-from bot.messages import BAG_TEXT, WALK_TEXTS
+from bot.messages import BAG_TEXT, WALK_TEXTS, WATERING_TEXTS
 from bot.utils.tree import formatted_heght_tree, formatted_next_walk
 
 router = Router()
@@ -37,6 +37,22 @@ async def walk(message: Message, user: User) -> Any:
 
     t = random.choice(WALK_TEXTS)
     text = t.format(petals=petals, water=water)
+
+    await message.reply(text)
+    return None
+
+
+@router.message(F.text == MainMenu.WATERING)
+async def watering(message: Message, user: User) -> Any:
+    if user.water <= 0:
+        return await message.reply("У вас нет воды для полива")
+    heigth = random.randint(1, 5)
+
+    user.len_tree += heigth
+    user.water -= 1
+
+    t = random.choice(WATERING_TEXTS)
+    text = t.format(tree=formatted_heght_tree(heigth))
 
     await message.reply(text)
     return None
