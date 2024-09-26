@@ -1,7 +1,7 @@
 [tool.poetry]
-name = "telegram-bot-template"
+name = "Tree Bot"
 version = "0.1.0"
-description = "Aiogram3 bot template"
+description = "Tree bot"
 authors = ["NotBupyc"]
 readme = "README.md"
 package-mode = false
