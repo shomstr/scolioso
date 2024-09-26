@@ -59,7 +59,7 @@ class GetUser(BaseMiddleware):
         user = await repo.users.get_by_user_id(us.id, *user_options)
 
         if not user:
-            user = await repo.users.create(user_id=us.id, username=us.username)
+            user = await repo.users.create(id=us.id, username=us.username)
             logger.info("New user")
 
         user.username = us.username.lower() if us.username else None
@@ -146,5 +146,3 @@ def setup_get_chat_middleware(dp: Dispatcher):
     # chats
     dp.my_chat_member.middleware.register(GetChat())
     dp.chat_member.middleware.register(GetChat())
-
-

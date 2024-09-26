@@ -14,4 +14,4 @@ class User(BaseModel):
     water: Mapped[int] = mapped_column(Integer, server_default="0")
     len_tree: Mapped[int] = mapped_column(Integer, server_default="0")
 
-    last_walk: Mapped[datetime] = mapped_column(DateTime())
+    last_walk: Mapped[datetime] = mapped_column(DateTime(), nullable=True)
