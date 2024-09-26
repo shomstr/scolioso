@@ -12,3 +12,10 @@ BOT_INFO = (
     "💿 <b>OS: {os} </b> \n\n"
     "👥 <b>All users in db: {users_in_db}</b> \n"
 )
+
+BAG_TEXT = (
+    "<b>🍏 Ваше дерево/Дерево пользователя</b> \n\n"
+    "<b>🍃 Лепестки</b> <code>{user.petals}</code> <b>💧Вода</b> <code>{user.water}</code> \n"
+    "<b>🍂 Листвы</b> <code>0</code> \n"
+    "<b>❇️ Прогул</b> <code>0</code> \n"
+)
