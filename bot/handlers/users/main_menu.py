@@ -10,6 +10,7 @@ from asyncpg.pgproto.pgproto import timedelta
 from bot.database.models import User
 from bot.enums.menus import MainMenu
 from bot.messages import BAG_TEXT, WALK_TEXTS
+from bot.utils.tree import formatted_heght_tree, formatted_next_walk
 
 router = Router()
 logger = logging.getLogger()
@@ -17,7 +18,9 @@ logger = logging.getLogger()
 
 @router.message(F.text == MainMenu.BAG)
 async def bag(message: Message, user: User):
-    text = BAG_TEXT.format(user=user)
+    text = BAG_TEXT.format(
+        user=user, tree=formatted_heght_tree(user.len_tree), watering_time=formatted_next_walk(user.last_walk)
+    )
     await message.reply(text)
 
 
