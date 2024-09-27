@@ -5,13 +5,33 @@ from sqlalchemy import select
 from sqlalchemy.orm import selectinload
 
 from .base import BaseRepo
-from bot.database.models import User, Chat
+from bot.database.models import User, Chat, ChatUser
+from aiogram.types import User as AiogramUser, Chat as AiogramChat
 
 
 class ChatsRepo(BaseRepo):
     model = Chat
 
     async def get_by_chat_id(self, chat_id: int, *chat_options) -> User | None:
-        q = select(Chat).where(Chat.chat_id == chat_id).options(*[selectinload(i) for i in chat_options])
+        q = select(Chat).where(Chat.id == chat_id).options(*[selectinload(i) for i in chat_options])
 
         return (await self.session.execute(q)).scalar()
+
+
+class ChatsUsersRepo(BaseRepo):
+    model = ChatUser
+
+    async def get_chat_user(self, user_id: int, chat_id: int, *chat_options) -> User | None:
+        q = (
+            select(ChatUser)
+            .where(ChatUser.user_id == user_id, ChatUser.chat_id == chat_id)
+            .options(*[selectinload(i) for i in chat_options])
+        )
+
+        return (await self.session.execute(q)).scalar()
+
+    async def create_from_aiogram_model(self, user: AiogramUser, chat: AiogramChat) -> ChatUser:
+        us: User = ChatUser(user_id=user.id, chat_id=chat.id)
+        await self.create_from_model(us)
+
+        return us

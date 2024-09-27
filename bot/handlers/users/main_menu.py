@@ -7,9 +7,9 @@ from aiogram import Router, F
 from aiogram.types import Message
 from asyncpg.pgproto.pgproto import timedelta
 
-from bot.database.models import User
+from bot.database.models import User, ChatUser
 from bot.enums.menus import MainMenu
-from bot.messages import BAG_TEXT, WALK_TEXTS, WATERING_TEXTS
+from bot.messages import BAG_TEXT, WALK_TEXTS, WATERING_TEXTS, BAG_TEXT_IN_CHAT
 from bot.utils.tree import formatted_heght_tree, formatted_next_walk
 
 router = Router()
@@ -17,16 +17,24 @@ logger = logging.getLogger()
 
 
 @router.message(F.text == MainMenu.BAG)
-async def bag(message: Message, user: User):
-    text = BAG_TEXT.format(
-        user=user, tree=formatted_heght_tree(user.len_tree), watering_time=formatted_next_walk(user.last_walk)
-    )
+async def bag(message: Message, user: User, chat_user: ChatUser):
+    if chat_user:
+        text = BAG_TEXT_IN_CHAT.format(
+            user=user,
+            tree=formatted_heght_tree(user.len_tree),
+            watering_time=formatted_next_walk(user.last_walk),
+            chat_user=chat_user,
+        )
+    else:
+        text = BAG_TEXT.format(
+            user=user, tree=formatted_heght_tree(user.len_tree), watering_time=formatted_next_walk(user.last_walk)
+        )
     await message.reply(text)
 
 
 @router.message(F.text == MainMenu.WALK)
-async def walk(message: Message, user: User) -> Any:
-    if user.last_walk and user.last_walk + timedelta(hours=12) > datetime.now():
+async def walk(message: Message, user: User, chat_user: ChatUser) -> Any:
+    if user.last_walk and user.last_walk + timedelta(hours=0) > datetime.now():
         return await message.answer("Еще рано для прогулки")
 
     user.last_walk = datetime.now()
@@ -34,6 +42,9 @@ async def walk(message: Message, user: User) -> Any:
     water = random.randint(1, 5)
     user.petals += petals
     user.water += water
+
+    if chat_user:
+        chat_user.walks += 1
 
     t = random.choice(WALK_TEXTS)
     text = t.format(petals=petals, water=water)

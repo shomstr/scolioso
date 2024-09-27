@@ -31,7 +31,7 @@ class ThrottlingMiddleware(BaseMiddleware):
                 await event.answer("Слишком часто, подожди немного", show_alert=True)
 
             elif isinstance(event, Message):
-                await event.delete()
+                return None
 
             return None
 

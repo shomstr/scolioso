@@ -6,8 +6,8 @@ from __future__ import annotations
 from datetime import datetime
 from typing import Any
 
-from sqlalchemy import BigInteger, Column, DateTime, func, Integer
-from sqlalchemy.orm import declarative_base, DeclarativeBase
+from sqlalchemy import BigInteger, DateTime, func
+from sqlalchemy.orm import declarative_base
 from sqlalchemy.orm import Mapped, mapped_column
 
 Base = declarative_base()
@@ -16,7 +16,7 @@ Base = declarative_base()
 class BaseModel(Base):
     __abstract__ = True
 
-    id: Mapped[int] = mapped_column(Integer, unique=True, autoincrement=True, nullable=False, primary_key=True)
+    id: Mapped[int] = mapped_column(BigInteger, unique=True, autoincrement=True, nullable=False, primary_key=True)
 
     @property
     def to_dict(self) -> dict[str, Any]:

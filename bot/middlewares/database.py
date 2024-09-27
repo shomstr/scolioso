@@ -4,6 +4,7 @@ from typing import TYPE_CHECKING, Any, Awaitable, Callable
 
 from aiogram import BaseMiddleware, Dispatcher
 from aiogram.dispatcher.flags import get_flag
+from aiogram.enums import ChatType
 
 from bot.database import get_repo
 
@@ -79,21 +80,53 @@ class GetChat(BaseMiddleware):
         event: TelegramObject,
         data: dict[str, Any],
     ) -> Any:
-        chat = data["event_chat"]
-        repo: Repositories = data["repo"]
+        _chat = data["event_chat"]
 
-        chat_flag = get_flag(data, "chat", default=False)
-
-        if not chat_flag:
+        if _chat.type == ChatType.PRIVATE:
             data["chat"] = None
             return await handler(event, data)
-        #
+
+        repo: Repositories = data["repo"]
+
         chat_options = get_flag(data, "chat_options", default=[])
 
-        chat = await repo.chats.get_by_chat_id(chat.id, *chat_options)
+        chat = await repo.chats.get_by_chat_id(_chat.id, *chat_options)
+
+        if not chat:
+            chat = await repo.chats.create(id=_chat.id, title=_chat.title)
+
         data["chat"] = chat
 
         await handler(event, data)
+        return None
+
+
+class GetChatUser(BaseMiddleware):
+    async def __call__(
+        self,
+        handler: Callable[[TelegramObject, dict[str, Any]], Awaitable[Any]],
+        event: TelegramObject,
+        data: dict[str, Any],
+    ) -> Any:
+        user = data["event_from_user"]
+        chat = data["event_chat"]
+
+        if chat.type == ChatType.PRIVATE:
+            data["chat_user"] = None
+            return await handler(event, data)
+
+        repo: Repositories = data["repo"]
+
+        chat_user_options = get_flag(data, "chat_user_options", default=[])
+
+        chat_user = await repo.chats_users.get_chat_user(user.id, chat.id, *chat_user_options)
+        if not chat_user:
+            chat_user = await repo.chats_users.create_from_aiogram_model(user, chat)
+
+        data["chat_user"] = chat_user
+
+        await handler(event, data)
+        await repo.chats_users.update(chat_user)
         return None
 
 
@@ -146,3 +179,20 @@ def setup_get_chat_middleware(dp: Dispatcher):
     # chats
     dp.my_chat_member.middleware.register(GetChat())
     dp.chat_member.middleware.register(GetChat())
+
+
+def setup_get_chat_user_middleware(dp: Dispatcher):
+    """
+    Setup GetChat middleware for handlers
+
+    :param dp:
+    :return:
+    """
+
+    dp.message.middleware.register(GetChatUser())
+    dp.callback_query.middleware.register(GetChatUser())
+    dp.inline_query.middleware.register(GetChatUser())
+
+    # chats
+    dp.my_chat_member.middleware.register(GetChatUser())
+    dp.chat_member.middleware.register(GetChatUser())
