@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 
-from sqlalchemy import select
+from sqlalchemy import select, update
 from sqlalchemy.orm import selectinload
 
 from .base import BaseRepo
@@ -35,3 +35,16 @@ class ChatsUsersRepo(BaseRepo):
         await self.create_from_model(us)
 
         return us
+
+    async def add_foliage_in_chat(self, user_id: int, chat_id: int, foliage: int = 1):
+        q = (
+            update(ChatUser)
+            .where(
+                ChatUser.user_id == user_id,
+                ChatUser.chat_id == chat_id,
+            )
+            .values(foliage=ChatUser.foliage + foliage)
+        )
+
+        await self.session.execute(q)
+        await self.session.commit()
