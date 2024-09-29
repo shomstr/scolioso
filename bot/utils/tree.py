@@ -11,5 +11,12 @@ def formatted_heght_tree(height_tree: int) -> str:
 
 def formatted_next_walk(last_walk: datetime):
     now = datetime.now()
+    if not last_walk:
+        return "Можно гулять"
+
     next_walk = last_walk + timedelta(hours=12)
-    return str(next_walk - now).split(".")[0]
+
+    if next_walk - now < timedelta(seconds=1):
+        return "Можно гулять"
+
+    return f'до след прогулки {str(next_walk - now).split(".")[0]}'

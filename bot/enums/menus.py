@@ -1,4 +1,4 @@
-from enum import StrEnum
+from enum import StrEnum, Enum
 
 
 class Emoji(StrEnum):
@@ -9,5 +9,11 @@ class Emoji(StrEnum):
 
 class MainMenu(StrEnum):
     WALK = "Прогулка"
-    WATERING = "Полив"
+    WATERING = f"{Emoji.WATER} Полив"
     BAG = f"{Emoji.TREE} Дерево"
+
+
+class MainMenuVars(Enum):
+    WALK = [MainMenu.WALK.lower(), "прогулка", "гулять"]
+    WATERING = [MainMenu.WATERING, "полив", "полить"]
+    BAG = [MainMenu.BAG.lower(), "дерево"]

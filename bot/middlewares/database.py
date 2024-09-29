@@ -57,18 +57,18 @@ class GetUser(BaseMiddleware):
             return await handler(event, data)
 
         user_options = get_flag(data, "user_options", default=[])
-        user = await repo.users.get_by_user_id(us.id, *user_options)
+        user = await repo.users.get(us.id, *user_options)
 
         if not user:
-            user = await repo.users.create(id=us.id, username=us.username)
+            user = await repo.users.create(id=us.id, name=us.full_name, username=us.username)
             logger.info("New user")
-
-        user.username = us.username.lower() if us.username else None
 
         data["user"] = user
 
         await handler(event, data)
 
+        user.username = us.username.lower() if us.username else None
+        user.name = us.full_name
         await repo.users.update(user)
         return None
 

@@ -17,7 +17,7 @@ class UsersRepo(BaseRepo):
 
         return (await self.session.execute(q)).scalar()
 
-    async def get_users_by_username(self, username: str) -> Sequence[User]:
-        q = select(User).where(User.username == username)
+    async def get_users_by_username(self, username: str, *user_options) -> Sequence[User]:
+        q = select(User).where(User.username == username).options(*[selectinload(i) for i in user_options])
 
         return (await self.session.execute(q)).scalars().all()

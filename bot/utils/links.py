@@ -1,19 +1,23 @@
+from __future__ import annotations
 import contextlib
 import html
+from typing import TYPE_CHECKING
 
 from aiogram.exceptions import TelegramBadRequest
 from aiogram.types import User, Message
 
 from bot.config import bot
-from bot.database import Repositories
+
+if TYPE_CHECKING:
+    from bot.database import Repositories
 
 
-def get_ping_link(user: User) -> str:
-    return f'<a href="tg://user?id={user.id}">{html.escape(user.full_name)}</a>'
+def get_ping_link(user_id: int, name: str) -> str:
+    return f'<a href="tg://user?id={user_id}">{html.escape(name)}</a>'
 
 
-def get_openmessage_link(user: User) -> str:
-    return f'<a href="tg://openmessage?user_id={user.id}">{html.escape(user.full_name)}</a>'
+def get_openmessage_link(user_id: int, name: str) -> str:
+    return f'<a href="tg://openmessage?user_id={user_id}">{html.escape(name)}</a>'
 
 
 async def get_user_by_username(repo: Repositories, username: str) -> User | None:
