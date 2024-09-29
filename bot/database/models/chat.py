@@ -1,10 +1,12 @@
 from __future__ import annotations
 
+
 from sqlalchemy import String, BigInteger, ForeignKey, Integer
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from bot.database.models import User
 from bot.database.models.base import BaseModel
+
+from bot.database.models import User
 
 
 class Chat(BaseModel):
@@ -12,7 +14,7 @@ class Chat(BaseModel):
 
     title: Mapped[str] = mapped_column(String, nullable=False)
 
-    members: Mapped["ChatUser"] = relationship(
+    members: Mapped[list["ChatUser"]] = relationship(
         "ChatUser",
         foreign_keys="ChatUser.chat_id",
         back_populates="chat",
@@ -27,11 +29,11 @@ class ChatUser(BaseModel):
     __tablename__ = "chats_users"
 
     user_id: Mapped[int] = mapped_column(BigInteger, ForeignKey(User.id), nullable=False)
-    user: Mapped[User] = relationship(User, uselist=False, foreign_keys=user_id, remote_side=User.id)
+    user: Mapped["User"] = relationship("User", uselist=False, foreign_keys=user_id, remote_side=User.id)
 
     chat_id: Mapped[int] = mapped_column(BigInteger, ForeignKey(Chat.id), nullable=False)
     chat: Mapped[Chat] = relationship(
-        Chat, uselist=False, foreign_keys=chat_id, remote_side=Chat.id, back_populates="members"
+        "Chat", uselist=False, foreign_keys=chat_id, remote_side="Chat.id", back_populates="members"
     )
 
     foliage: Mapped[int] = mapped_column(Integer, nullable=False, server_default="0")
