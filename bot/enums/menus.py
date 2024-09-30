@@ -9,11 +9,11 @@ class Emoji(StrEnum):
 
 class MainMenu(StrEnum):
     WALK = "Прогулка"
-    WATERING = f"{Emoji.WATER} Полив"
-    BAG = f"{Emoji.TREE} Дерево"
+    WATERING = "🚿 Полить"
+    BAG = "👨🏻‍🌾 Садовник"
 
 
 class MainMenuVars(Enum):
     WALK = [MainMenu.WALK.lower(), "прогулка", "гулять"]
     WATERING = [MainMenu.WATERING, "полив", "полить"]
-    BAG = [MainMenu.BAG.lower(), "дерево"]
+    BAG = [MainMenu.BAG.lower(), "садовник", f"{Emoji.TREE} Дерево".lower(), "дерево"]

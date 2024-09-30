@@ -31,7 +31,7 @@ OTHER_BAG_TEXT = "<b> 🍏 Дерево {user.openmessage_link} </b> \n\n" + BAG
 
 YOUR_BAG_TEXT_IN_CHAT = YOUR_BAG_TEXT + "\n\n" + BAG_CHAT_STATS
 
-OTHER_BAG_TEXT_IN_CHAT = YOUR_BAG_TEXT + "\n\n" + BAG_CHAT_STATS
+OTHER_BAG_TEXT_IN_CHAT = OTHER_BAG_TEXT + "\n\n" + BAG_CHAT_STATS
 
 WALK_TEXTS = [
     " 🌳 Ваша прогулка принесла удачу! Вы нашли {petals} лепестка ☘️ и {water} бутылки воды 💧",

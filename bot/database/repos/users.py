@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Sequence
 
-from sqlalchemy import select
+from sqlalchemy import select, desc
 from sqlalchemy.orm import selectinload
 
 from .base import BaseRepo
@@ -19,5 +19,10 @@ class UsersRepo(BaseRepo):
 
     async def get_users_by_username(self, username: str, *user_options) -> Sequence[User]:
         q = select(User).where(User.username == username).options(*[selectinload(i) for i in user_options])
+
+        return (await self.session.execute(q)).scalars().all()
+
+    async def top_users(self) -> Sequence[User]:
+        q = select(User).order_by(desc(User.len_tree)).limit(50)
 
         return (await self.session.execute(q)).scalars().all()

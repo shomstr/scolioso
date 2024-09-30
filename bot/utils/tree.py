@@ -20,3 +20,8 @@ def formatted_next_walk(last_walk: datetime):
         return "Можно гулять"
 
     return f'до след прогулки {str(next_walk - now).split(".")[0]}'
+
+
+def formatted_top_number(number: int) -> str:
+    medals = {1: "🏅", 2: "🥈", 3: "🥉"}
+    return medals.get(number, f" {number}.")

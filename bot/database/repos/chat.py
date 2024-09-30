@@ -1,7 +1,8 @@
 from __future__ import annotations
 
+from typing import Sequence
 
-from sqlalchemy import select, update
+from sqlalchemy import select, update, desc
 from sqlalchemy.orm import selectinload
 
 from .base import BaseRepo
@@ -48,3 +49,17 @@ class ChatsUsersRepo(BaseRepo):
 
         await self.session.execute(q)
         await self.session.commit()
+
+    async def top_users(self, chat_id: int) -> Sequence[ChatUser]:
+        q = (
+            select(User)
+            .join(ChatUser)
+            .where(
+                ChatUser.user_id == User.id,
+                ChatUser.chat_id == chat_id,
+            )
+            .order_by(desc(User.len_tree))
+            .limit(50)
+        )
+
+        return (await self.session.execute(q)).scalars().all()

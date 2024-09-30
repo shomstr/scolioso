@@ -4,8 +4,8 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from aiogram import Router
 
-from . import start_help, main_menu
+from . import start_help, main_menu, top
 
-routers: list[Router] = [start_help.router, main_menu.router]
+routers: list[Router] = [start_help.router, main_menu.router, top.router]
 
 _all__ = ["routers"]

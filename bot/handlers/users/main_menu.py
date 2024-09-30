@@ -1,11 +1,10 @@
 import logging
 import random
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import Any
 
 from aiogram import Router
 from aiogram.types import Message
-from asyncpg.pgproto.pgproto import timedelta
 
 from bot.database import Repositories
 from bot.database.models import User, ChatUser
@@ -46,11 +45,13 @@ async def bag(message: Message, repo: Repositories, user: User, chat_user: ChatU
     else:
         if us.get("user_id"):
             user = await repo.users.get(us.get("user_id"))
+            if not user:
+                return await message.reply("Юзер не найден")
             chat_user = await repo.chats_users.get(us.get("user_id"))
         else:
             user = await get_user_by_username(repo, us.get("username"))
             if not user:
-                return message.reply("Юзер не найден")
+                return await message.reply("Юзер не найден")
             chat_user = await repo.chats_users.get_chat_user(user.id, message.chat.id)
 
         if chat_user:

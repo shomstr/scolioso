@@ -1,9 +1,13 @@
 from datetime import datetime
+from typing import TYPE_CHECKING
 
 from sqlalchemy import String, Integer, DateTime
-from sqlalchemy.orm import mapped_column, Mapped
+from sqlalchemy.orm import mapped_column, Mapped, relationship
 from .base import BaseModel
 from ...utils.links import get_openmessage_link, get_ping_link
+
+if TYPE_CHECKING:
+    from .chat import ChatUser
 
 
 class User(BaseModel):
@@ -17,6 +21,8 @@ class User(BaseModel):
     len_tree: Mapped[int] = mapped_column(Integer, server_default="0")
 
     last_walk: Mapped[datetime] = mapped_column(DateTime(), nullable=True)
+
+    chats_users: Mapped[list["ChatUser"]] = relationship("ChatUser", uselist=True, back_populates="user")
 
     @property
     def ping_link(self) -> str:

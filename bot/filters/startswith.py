@@ -9,4 +9,6 @@ class StartsWith(BaseFilter):
         self.values = values
 
     async def __call__(self, message: Message) -> bool:
+        if not message.text:
+            return False
         return any(message.text.lower().startswith(str(value)) for value in self.values)
