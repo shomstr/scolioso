@@ -24,10 +24,8 @@ class User(BaseModel):
 
     chats_users: Mapped[list["ChatUser"]] = relationship("ChatUser", uselist=True, back_populates="user")
 
-    @property
     def ping_link(self) -> str:
         return get_ping_link(self.id, self.name)
 
-    @property
     def openmessage_link(self) -> str:
         return get_openmessage_link(self.id, self.name)

@@ -15,6 +15,7 @@ bot = Bot(
     ),
 )
 
+
 storage: BaseStorage
 if settings.redis.use:
     storage = RedisStorage(settings.redis.get_redis())

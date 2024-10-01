@@ -4,6 +4,7 @@ from datetime import datetime, timedelta
 from typing import Any
 
 from aiogram import Router
+from aiogram.enums import ChatType
 from aiogram.types import Message
 
 from bot.database import Repositories
@@ -13,12 +14,9 @@ from bot.filters import StartsWith
 from bot.messages import (
     WALK_TEXTS,
     WATERING_TEXTS,
-    YOUR_BAG_TEXT,
-    YOUR_BAG_TEXT_IN_CHAT,
-    OTHER_BAG_TEXT_IN_CHAT,
-    OTHER_BAG_TEXT,
 )
 from bot.utils.aiogram import get_user_from_message, get_user_by_username
+from bot.utils.texts import Texts
 from bot.utils.tree import formatted_heght_tree, formatted_next_walk
 
 router = Router()
@@ -29,45 +27,35 @@ logger = logging.getLogger()
 async def bag(message: Message, repo: Repositories, user: User, chat_user: ChatUser):
     us = get_user_from_message(message)
     if not us:
-        if chat_user:
-            text = YOUR_BAG_TEXT_IN_CHAT.format(
-                user=user,
-                tree=formatted_heght_tree(user.len_tree),
-                watering_time=formatted_next_walk(user.last_walk),
-                chat_user=chat_user,
-            )
-        else:
-            text = YOUR_BAG_TEXT.format(
-                user=user,
-                tree=formatted_heght_tree(user.len_tree),
-                watering_time=formatted_next_walk(user.last_walk),
-            )
+        is_self = True
+
     else:
         if us.get("user_id"):
             user = await repo.users.get(us.get("user_id"))
             if not user:
                 return await message.reply("Юзер не найден")
-            chat_user = await repo.chats_users.get(us.get("user_id"))
         else:
             user = await get_user_by_username(repo, us.get("username"))
             if not user:
                 return await message.reply("Юзер не найден")
+
+        if message.chat.type == ChatType.PRIVATE:
+            chat_user = None
+        else:
             chat_user = await repo.chats_users.get_chat_user(user.id, message.chat.id)
 
-        if chat_user:
-            text = OTHER_BAG_TEXT_IN_CHAT.format(
-                user=user,
-                tree=formatted_heght_tree(user.len_tree),
-                watering_time=formatted_next_walk(user.last_walk),
-                chat_user=chat_user,
-            )
-        else:
-            text = OTHER_BAG_TEXT.format(
-                user=user,
-                tree=formatted_heght_tree(user.len_tree),
-                watering_time=formatted_next_walk(user.last_walk),
-            )
+        is_self = False
 
+    text = Texts.gettext(
+        "BAG_TEXTS",
+        context={
+            "is_self": is_self,
+            "user": user,
+            "chat_user": chat_user,
+            "tree": formatted_heght_tree(user.len_tree),
+            "walk_time": formatted_next_walk(user.last_walk),
+        },
+    )
     await message.reply(text)
     return None
 

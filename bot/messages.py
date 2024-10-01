@@ -13,26 +13,6 @@ BOT_INFO = (
     "👥 <b>All users in db: {users_in_db}</b> \n"
 )
 
-BAG_TEXT = (
-    "<b> 🌳 Высота дерева</b> <code>{tree}</code> \n"
-    "<b> 🍃 Лепестки</b> <code>{user.petals}</code> <b>💧Вода</b> <code>{user.water}</code> \n"
-    "<b> 🚶 Прогулка ( 12 часов ), {watering_time} </b>"
-)
-
-BAG_CHAT_STATS = (
-    " Статистика в текущем чате: \n"
-    " 🍂 Листвы <code>{chat_user.foliage}</code> \n"
-    " 🌊 Прогулов <code>{chat_user.walks}</code>"
-)
-
-YOUR_BAG_TEXT = "<b> 🍏 Ваше дерево</b> \n\n" + BAG_TEXT
-
-OTHER_BAG_TEXT = "<b> 🍏 Дерево {user.openmessage_link} </b> \n\n" + BAG_TEXT
-
-YOUR_BAG_TEXT_IN_CHAT = YOUR_BAG_TEXT + "\n\n" + BAG_CHAT_STATS
-
-OTHER_BAG_TEXT_IN_CHAT = OTHER_BAG_TEXT + "\n\n" + BAG_CHAT_STATS
-
 WALK_TEXTS = [
     " 🌳 Ваша прогулка принесла удачу! Вы нашли {petals} лепестка ☘️ и {water} бутылки воды 💧",
     " 🍃 Здорово! Вам попались {petals} лепестка ☘️ и {water} бутылки воды 💧",
