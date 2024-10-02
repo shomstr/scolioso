@@ -17,7 +17,7 @@ from bot.messages import (
 )
 from bot.utils.aiogram import get_user_from_message, get_user_by_username
 from bot.utils.texts import Texts
-from bot.utils.tree import formatted_heght_tree, formatted_next_walk
+from bot.utils.tree import formatted_heght_tree, formatted_next_walk, walk_time
 
 router = Router()
 logger = logging.getLogger()
@@ -53,7 +53,8 @@ async def bag(message: Message, repo: Repositories, user: User, chat_user: ChatU
             "user": user,
             "chat_user": chat_user,
             "tree": formatted_heght_tree(user.len_tree),
-            "walk_time": formatted_next_walk(user.last_walk),
+            "next_walk": formatted_next_walk(user.last_walk),
+            "walk_time": walk_time(user),
         },
     )
     await message.reply(text)
@@ -62,7 +63,7 @@ async def bag(message: Message, repo: Repositories, user: User, chat_user: ChatU
 
 @router.message(StartsWith(MainMenuVars.WALK.value))
 async def walk(message: Message, user: User, chat_user: ChatUser) -> Any:
-    if user.last_walk and user.last_walk + timedelta(hours=0) > datetime.now():
+    if user.last_walk and user.last_walk + timedelta(hours=walk_time(user)) > datetime.now():
         return await message.answer("Еще рано для прогулки")
 
     user.last_walk = datetime.now()

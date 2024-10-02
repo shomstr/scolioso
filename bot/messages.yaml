@@ -8,9 +8,13 @@ BAG_TEXTS: |
   {% if is_self %}<b>🍏 Ваше дерево</b> <nl><nl>
   {% else %}<b>🍏 Дерево</b> {{ user.openmessage_link() }} <nl>
   {% endif %}
+
+  {% if is_self and check_datetime(user.vip_to) %}
+  💎 <b>Вип до <u>{{ datetime_to_str(user.vip_to) }}</u></b> <nl>
+  {% endif %}
   <b>🌳 Высота дерева</b> <code>{{ tree }}</code> <nl>
   <b>🍃 Лепестки</b> <code>{{ user.petals }}</code> <b>💧Вода</b> <code>{{ user.water }}</code> <nl>
-  <b>🚶 Прогулка ( 12 часов ), {{ walk_time }} </b>
+  <b>🚶 Прогулка ({{walk_time}} часов), {{ next_walk }} </b>
 
   {% if chat_user %} <nl><nl>
   <b>Статистика в текущем чате:</b> <nl>
@@ -25,7 +29,7 @@ TOP_USERS_GLOBAL: |
   {% endfor %}
 
 TOP_USERS_CHAT: |
-  <b>🌳 Статистика деревьев чата:</b> <nl>
+  <b>🌳 Статистика деревьев леса <u>{{ chat.title | e }}</u></b> <nl>
   {% for i, user in enumerate(users, start=1) %}
   {{ formatted_top_number(i) }} {{ user.openmessage_link() }} - {{ formatted_heght_tree(user.len_tree) }} <nl>
   {% endfor %}

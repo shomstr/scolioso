@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import TYPE_CHECKING
 
-from sqlalchemy import String, Integer, DateTime
+from sqlalchemy import String, Integer, DateTime, func
 from sqlalchemy.orm import mapped_column, Mapped, relationship
 from .base import BaseModel
 from ...utils.links import get_openmessage_link, get_ping_link
@@ -23,6 +23,8 @@ class User(BaseModel):
     last_walk: Mapped[datetime] = mapped_column(DateTime(), nullable=True)
 
     chats_users: Mapped[list["ChatUser"]] = relationship("ChatUser", uselist=True, back_populates="user")
+
+    vip_to: Mapped[datetime] = mapped_column(DateTime(), server_default=func.now())
 
     def ping_link(self) -> str:
         return get_ping_link(self.id, self.name)

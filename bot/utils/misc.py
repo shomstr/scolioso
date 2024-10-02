@@ -4,7 +4,7 @@ import platform
 import subprocess
 import sys
 import time
-from datetime import timedelta
+from datetime import timedelta, datetime
 from typing import Any
 
 import aiogram
@@ -105,3 +105,33 @@ async def bot_info_dict() -> dict[str, Any]:
         inf["users_in_db"] = await repo.users.get_all(count=True)
 
     return inf
+
+
+def check_datetime(time: datetime) -> bool:
+    """
+    :param time_in_timestamp:
+    :return: True если дата в time больше чем сегодняшняя
+    """
+
+    if not time:
+        return True
+
+    now = datetime.now()
+
+    if time > now:
+        return True
+    return False
+
+
+def datetime_to_str(date: datetime) -> str:
+    if not date:
+        return "Навсегда"
+
+    now = datetime.now()
+
+    if (date - now) >= timedelta(days=1):
+        d = date.strftime("%d.%m.%Y")
+        return f"{d} ({(date - now).days} дней)"
+
+    d = date - now
+    return str(d).split(".")[0]

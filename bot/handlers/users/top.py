@@ -27,7 +27,7 @@ async def chat_top(message: Message, repo: Repositories, bot: Bot):
         return await message.reply("Работает только в чатах")
 
     users = await repo.chats_users.top_users(message.chat.id)
-    text = Texts.gettext("TOP_USERS_CHAT", context={"users": users})
+    text = Texts.gettext("TOP_USERS_CHAT", context={"users": users, "chat": message.chat})
 
     await message.reply(text)
     return None

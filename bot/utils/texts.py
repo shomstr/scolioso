@@ -6,6 +6,7 @@ import yaml
 from jinja2 import Template
 
 from bot.settings import BotDir
+from bot.utils.misc import check_datetime, datetime_to_str
 from bot.utils.tree import formatted_top_number, formatted_heght_tree
 
 
@@ -40,6 +41,8 @@ class JinjaTexts:
             round=round,
             formatted_heght_tree=formatted_heght_tree,
             formatted_top_number=formatted_top_number,
+            check_datetime=check_datetime,
+            datetime_to_str=datetime_to_str,
         )
 
         return template
