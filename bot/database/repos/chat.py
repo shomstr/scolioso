@@ -22,7 +22,7 @@ class ChatsRepo(BaseRepo):
 class ChatsUsersRepo(BaseRepo):
     model = ChatUser
 
-    async def get_chat_user(self, user_id: int, chat_id: int, *chat_options) -> User | None:
+    async def get_chat_user(self, user_id: int, chat_id: int, *chat_options) -> ChatUser | None:
         q = (
             select(ChatUser)
             .where(ChatUser.user_id == user_id, ChatUser.chat_id == chat_id)

@@ -3,15 +3,16 @@ from typing import TYPE_CHECKING
 
 from sqlalchemy import String, Integer, DateTime, func
 from sqlalchemy.orm import mapped_column, Mapped, relationship
-from .base import BaseModel
+from .base import Base
 from ...utils.links import get_openmessage_link, get_ping_link
 
 if TYPE_CHECKING:
     from .chat import ChatUser
 
 
-class User(BaseModel):
+class User(Base):
     __tablename__ = "users"
+    __repr_attrs__ = ["name", "username", "id"]
 
     name: Mapped[str] = mapped_column(String(32), nullable=True)
     username: Mapped[str] = mapped_column(String(32), nullable=True)

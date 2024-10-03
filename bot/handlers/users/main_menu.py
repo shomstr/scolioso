@@ -8,7 +8,7 @@ from aiogram.enums import ChatType
 from aiogram.types import Message
 
 from bot.database import Repositories
-from bot.database.models import User, ChatUser
+from bot.database.models import User, ChatUser, Chat
 from bot.enums.menus import MainMenuVars
 from bot.filters import StartsWith
 from bot.messages import (
@@ -23,8 +23,13 @@ router = Router()
 logger = logging.getLogger()
 
 
-@router.message(StartsWith(MainMenuVars.BAG.value))
-async def bag(message: Message, repo: Repositories, user: User, chat_user: ChatUser):
+@router.message(
+    StartsWith(MainMenuVars.BAG.value),
+    flags={
+        "chat_user_options": [ChatUser.user],
+    },
+)
+async def bag(message: Message, repo: Repositories, user: User, chat_user: ChatUser, chat: Chat):
     us = get_user_from_message(message)
     if not us:
         is_self = True
@@ -42,7 +47,10 @@ async def bag(message: Message, repo: Repositories, user: User, chat_user: ChatU
         if message.chat.type == ChatType.PRIVATE:
             chat_user = None
         else:
-            chat_user = await repo.chats_users.get_chat_user(user.id, message.chat.id)
+            chat_user = await repo.chats_users.get_chat_user(
+                user.id,
+                message.chat.id,
+            )
 
         is_self = False
 
