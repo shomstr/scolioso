@@ -26,6 +26,7 @@ class User(Base):
     chats_users: Mapped[list["ChatUser"]] = relationship("ChatUser", uselist=True, back_populates="user")
 
     vip_to: Mapped[datetime] = mapped_column(DateTime(), server_default=func.now())
+    apples: Mapped[int] = mapped_column(Integer, server_default="0")
 
     def ping_link(self) -> str:
         return get_ping_link(self.id, self.name)
