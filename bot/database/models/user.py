@@ -12,7 +12,7 @@ if TYPE_CHECKING:
 
 class User(Base):
     __tablename__ = "users"
-    __repr_attrs__ = ["name", "username", "id"]
+    _repr_attrs = ["id", "name"]
 
     name: Mapped[str] = mapped_column(String(32), nullable=True)
     username: Mapped[str] = mapped_column(String(32), nullable=True)

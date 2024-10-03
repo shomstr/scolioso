@@ -6,7 +6,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from bot.database.models.base import Base
 
-from bot.database.models import User
+from bot.database.models.mixins import UserRelationshipMixin
 
 
 class Chat(Base):
@@ -25,11 +25,9 @@ class Chat(Base):
     )
 
 
-class ChatUser(Base):
+class ChatUser(Base, UserRelationshipMixin):
     __tablename__ = "chats_users"
-
-    user_id: Mapped[int] = mapped_column(BigInteger, ForeignKey(User.id), nullable=False)
-    user: Mapped["User"] = relationship("User", uselist=False, foreign_keys=user_id, remote_side=User.id, lazy="raise")
+    _user_relationship_kwargs = {"lazy": "raise"}
 
     chat_id: Mapped[int] = mapped_column(BigInteger, ForeignKey(Chat.id), nullable=False)
     chat: Mapped[Chat] = relationship(
