@@ -15,6 +15,7 @@ from bot.filters import StartsWith
 from bot.messages import (
     WALK_TEXTS,
     WATERING_TEXTS,
+    SMOKING_TEXTS,
 )
 from bot.utils.aiogram import get_user_from_message, get_user_by_username
 from bot.utils.texts import Texts
@@ -98,5 +99,17 @@ async def watering(message: Message, user: User) -> Any:
     t = random.choice(WATERING_TEXTS)
     text = t.format(tree=formatted_heght_tree(heigth))
 
+    await message.reply(text)
+    return None
+
+
+@router.message(StartsWith(MainMenuVars.SMOKING.value))
+async def smoking(message: Message, user: User) -> Any:
+    if user.petals <= 0:
+        return await message.reply("Недостаточно листьев")
+
+    user.petals -= 1
+    t = random.choice(SMOKING_TEXTS)
+    text = t.format(user=user)
     await message.reply(text)
     return None

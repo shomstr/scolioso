@@ -17,3 +17,4 @@ class MainMenuVars(Enum):
     WALK = [MainMenu.WALK.lower(), "прогулка", "гулять"]
     WATERING = [MainMenu.WATERING, "полив", "полить"]
     BAG = [MainMenu.BAG.lower(), "садовник", f"{Emoji.TREE} Дерево".lower(), "дерево"]
+    SMOKING = ["хапнуть", "скурить"]

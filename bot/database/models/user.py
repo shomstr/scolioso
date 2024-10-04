@@ -28,8 +28,10 @@ class User(Base):
     vip_to: Mapped[datetime] = mapped_column(DateTime(), server_default=func.now())
     apples: Mapped[int] = mapped_column(Integer, server_default="0")
 
+    @property
     def ping_link(self) -> str:
         return get_ping_link(self.id, self.name)
 
+    @property
     def openmessage_link(self) -> str:
         return get_openmessage_link(self.id, self.name)
