@@ -7,6 +7,7 @@ from aiogram import Router
 from aiogram.enums import ChatType
 from aiogram.types import Message
 
+from bot.config import MIN_LENGHT_TREE, MAX_LENGHT_TREE, MIN_PETALS_WALK, MIN_WATER_WALK, MAX_PETALS_WALK, MAX_WATER_WALK
 from bot.database import Repositories
 from bot.database.models import User, ChatUser
 from bot.enums.menus import MainMenuVars
@@ -70,8 +71,8 @@ async def walk(message: Message, user: User, chat_user: ChatUser) -> Any:
         return await message.reply(f"Еще рано, {formatted_next_walk(user)}")
 
     user.last_walk = datetime.now()
-    petals = random.randint(1, 10)
-    water = random.randint(1, 5)
+    petals = random.randint(MIN_PETALS_WALK, MAX_PETALS_WALK)
+    water = random.randint(MIN_WATER_WALK, MAX_WATER_WALK)
     user.petals += petals
     user.water += water
 
@@ -89,7 +90,7 @@ async def walk(message: Message, user: User, chat_user: ChatUser) -> Any:
 async def watering(message: Message, user: User) -> Any:
     if user.water <= 0:
         return await message.reply("У вас нет воды для полива")
-    heigth = random.randint(1, 5)
+    heigth = random.randint(MIN_LENGHT_TREE, MAX_LENGHT_TREE)
 
     user.len_tree += heigth
     user.water -= 1
