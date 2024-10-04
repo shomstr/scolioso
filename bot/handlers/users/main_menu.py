@@ -56,7 +56,7 @@ async def bag(message: Message, repo: Repositories, user: User, chat_user: ChatU
             "user": user,
             "chat_user": chat_user,
             "tree": formatted_heght_tree(user.len_tree),
-            "next_walk": formatted_next_walk(user.last_walk),
+            "next_walk": formatted_next_walk(user),
             "walk_time": walk_time(user),
         },
     )
@@ -67,7 +67,7 @@ async def bag(message: Message, repo: Repositories, user: User, chat_user: ChatU
 @router.message(StartsWith(MainMenuVars.WALK.value))
 async def walk(message: Message, user: User, chat_user: ChatUser) -> Any:
     if user.last_walk and user.last_walk + timedelta(hours=walk_time(user)) > datetime.now():
-        return await message.answer("Еще рано для прогулки")
+        return await message.reply(f"Еще рано, {formatted_next_walk(user)}")
 
     user.last_walk = datetime.now()
     petals = random.randint(1, 10)

@@ -13,12 +13,14 @@ def formatted_heght_tree(height_tree: int) -> str:
     return f"{round(height_tree / 1000, 1)} км"
 
 
-def formatted_next_walk(last_walk: datetime):
+def formatted_next_walk(user: User):
     now = datetime.now()
+    last_walk = user.last_walk
+
     if not last_walk:
         return "Можно гулять"
 
-    next_walk = last_walk + timedelta(hours=12)
+    next_walk = last_walk + timedelta(hours=walk_time(user))
 
     if next_walk - now < timedelta(seconds=1):
         return "Можно гулять"
