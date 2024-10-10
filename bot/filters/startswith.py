@@ -11,4 +11,8 @@ class StartsWith(BaseFilter):
     async def __call__(self, message: Message) -> bool:
         if not message.text:
             return False
-        return any(message.text.lower().startswith(str(value)) for value in self.values)
+
+        for value in self.values:
+            if message.text.lower().startswith(str(value)):
+                return {"command": str(value)}
+        return False

@@ -39,8 +39,11 @@ async def get_user_by_username(repo: Repositories, username: str, *user_options)
         return None
 
 
-def get_user_from_message(message: Message) -> dict | None:
+def get_user_from_message(message: Message, command: str | None = None) -> dict | None:
     text = message.text.lower()
+    if command:
+        text = text.replace(command, "")
+
     for i in text.split():
         if i.startswith("@"):
             if i[1:].isdigit():
