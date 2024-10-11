@@ -24,6 +24,8 @@ class Chat(Base):
         post_update=True,
     )
 
+    foliage: Mapped[int] = mapped_column(Integer, nullable=False, server_default="0")
+
 
 class ChatUser(Base, UserRelationshipMixin):
     __tablename__ = "chats_users"
