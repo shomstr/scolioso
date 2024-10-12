@@ -5,23 +5,29 @@ HELP: |
   Привет
 
 BAG_TEXTS: |
-  {% if is_self %}<b>🍏 Ваше дерево</b> <nl><nl>
-  {% else %}<b>🍏 Дерево</b> {{ user.openmessage_link }} <nl>
-  {% endif %}
+  <b>👨🏼‍🌾 Информация о садовнике</b> {{ user.openmessage_link }}
+  <nl><nl>
 
   <b>🌳 Высота дерева</b> <code>{{ tree }}</code> <nl>
+
   <b>🍃 Лепестки</b> <code>{{ user.petals }}</code> <b>💧Вода</b> <code>{{ user.water }}</code> <nl>
-  {% if is_self %}<b>🍎 Яблок</b> {{ user.apples }} <nl>
+  {% if is_self %}<b>🍏 Яблок</b> {{ user.apples }} <nl>
   {% endif %}
   {% if is_self and check_datetime(user.vip_to) %}
   💎 <b>Вип до <u>{{ datetime_to_str(user.vip_to) }}</u></b> <nl>
+  {% endif %} <nl>
+  <b>🧌 Прогулка [{{ walk_time }} часов] </b> <nl>
+
+  {% if check_walk %}
+  <b>⏰ {{ next_walk }}</b>
+  {% else %}
+  <b>⏰ Следующая прогулка через {{ next_walk }} </b>
   {% endif %}
-  <b>🚶 Прогулка ({{walk_time}} часов), {{ next_walk }} </b>
 
   {% if chat_user %} <nl><nl>
   <b>Статистика в текущем чате:</b> <nl>
   <b>🍂 Листвы</b> <code>{{ chat_user.foliage }}</code> <nl>
-  <b>🌊 Прогулов</b> <code>{{ chat_user.walks }}</code><nl>
+  <b>🏃🏻‍♀️ Прогулов</b> <code>{{ chat_user.walks }}</code><nl>
   {% endif %}
 
 TOP_USERS_GLOBAL: |

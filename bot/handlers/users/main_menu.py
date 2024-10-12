@@ -21,7 +21,7 @@ from bot.messages import (
 )
 from bot.utils.aiogram import get_user_by_username
 from bot.utils.texts import Texts
-from bot.utils.tree import formatted_heght_tree, formatted_next_walk, walk_time
+from bot.utils.tree import formatted_heght_tree, formatted_next_walk, walk_time, check_walk
 
 router = Router()
 logger = logging.getLogger()
@@ -69,6 +69,7 @@ async def bag(
             "tree": formatted_heght_tree(user.len_tree),
             "next_walk": formatted_next_walk(user),
             "walk_time": walk_time(user),
+            "check_walk": check_walk(user),
         },
     )
     await message.reply(text)
