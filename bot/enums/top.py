@@ -7,3 +7,4 @@ class GlobalTop(Enum):
 
 class ChatTop(Enum):
     CHAT_TOP = ["рейтинг чата", "рей чата", "топ чата"]
+    CHAT_TOP_DONATE = [f"{i} листвы" for i in CHAT_TOP]

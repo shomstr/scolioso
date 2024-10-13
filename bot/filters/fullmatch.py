@@ -6,7 +6,7 @@ from aiogram.types import Message
 from bot.utils.aiogram import get_user_from_message
 
 
-class Fullmatch(BaseFilter):
+class FullmatchWithArgs(BaseFilter):
     def __init__(self, *commands, user: bool = True, count: bool = True):
         self.commands = commands
         self.user = user
@@ -31,5 +31,20 @@ class Fullmatch(BaseFilter):
                     "us": get_user_from_message(message, command) if self.user else None,
                     "count": int(t.get("count")) if self.count else None,
                 }
+
+        return False
+
+
+class Fullmatch(BaseFilter):
+    def __init__(self, *commands):
+        self.commands = commands
+
+    async def __call__(self, message: Message) -> bool | dict:
+        if not message.text:
+            return False
+
+        for command in self.commands:
+            if message.text.lower() == command.lower():
+                return {"command": command}
 
         return False

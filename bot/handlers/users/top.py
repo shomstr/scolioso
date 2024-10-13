@@ -6,14 +6,14 @@ from aiogram.types import Message
 
 from bot.database import Repositories
 from bot.enums.top import ChatTop, GlobalTop
-from bot.filters import StartsWith
+from bot.filters import Fullmatch
 from bot.utils.texts import Texts
 
 router = Router()
 logger = logging.getLogger()
 
 
-@router.message(StartsWith(GlobalTop.GLOBAL_TOP.value))
+@router.message(Fullmatch(*GlobalTop.GLOBAL_TOP.value))
 async def global_top(message: Message, repo: Repositories):
     users = await repo.users.top_users()
     text = Texts.gettext("TOP_USERS_GLOBAL", context={"users": users})
@@ -21,7 +21,7 @@ async def global_top(message: Message, repo: Repositories):
     await message.reply(text, parse_mode="HTML")
 
 
-@router.message(StartsWith(ChatTop.CHAT_TOP.value))
+@router.message(Fullmatch(*ChatTop.CHAT_TOP.value))
 async def chat_top(message: Message, repo: Repositories, bot: Bot):
     if message.chat.type == ChatType.PRIVATE:
         return await message.reply("Работает только в чатах")

@@ -12,7 +12,7 @@ from bot.config import MIN_LENGHT_TREE, MAX_LENGHT_TREE, MIN_PETALS_WALK, MIN_WA
 from bot.database import Repositories
 from bot.database.models import User, ChatUser, Chat
 from bot.enums.menus import MainMenuVars
-from bot.filters import StartsWith, Fullmatch
+from bot.filters import StartsWith, FullmatchWithArgs
 from bot.messages import (
     WALK_TEXTS,
     WATERING_TEXTS,
@@ -28,7 +28,10 @@ logger = logging.getLogger()
 
 
 @router.message(
-    or_f(Fullmatch(*MainMenuVars.BAG.value, count=False), Fullmatch(*MainMenuVars.BAG.value, user=False, count=False))
+    or_f(
+        FullmatchWithArgs(*MainMenuVars.BAG.value, count=False),
+        FullmatchWithArgs(*MainMenuVars.BAG.value, user=False, count=False),
+    )
 )
 async def bag(
     message: Message,
@@ -99,8 +102,8 @@ async def walk(message: Message, user: User, chat_user: ChatUser) -> Any:
 
 @router.message(
     or_f(
-        Fullmatch(*MainMenuVars.WATERING.value, user=False),
-        Fullmatch(*MainMenuVars.WATERING.value, user=False, count=False),
+        FullmatchWithArgs(*MainMenuVars.WATERING.value, user=False),
+        FullmatchWithArgs(*MainMenuVars.WATERING.value, user=False, count=False),
     )
 )
 async def watering(message: Message, user: User, count: int | None) -> Any:
@@ -121,8 +124,8 @@ async def watering(message: Message, user: User, count: int | None) -> Any:
 
 @router.message(
     or_f(
-        Fullmatch(*MainMenuVars.SMOKING.value, user=False),
-        Fullmatch(*MainMenuVars.SMOKING.value, user=False, count=False),
+        FullmatchWithArgs(*MainMenuVars.SMOKING.value, user=False),
+        FullmatchWithArgs(*MainMenuVars.SMOKING.value, user=False, count=False),
     )
 )
 async def smoking(message: Message, user: User, count: int | None) -> Any:
@@ -138,7 +141,7 @@ async def smoking(message: Message, user: User, count: int | None) -> Any:
 
 
 @router.message(
-    Fullmatch("опад", user=False),
+    FullmatchWithArgs("опад", user=False),
 )
 async def opad(message: Message, user: User, chat_user: ChatUser, chat: Chat, count: int) -> Any:
     if message.chat.type == ChatType.PRIVATE:
@@ -148,6 +151,7 @@ async def opad(message: Message, user: User, chat_user: ChatUser, chat: Chat, co
         return await message.reply("Недостаточно листвы")
 
     chat_user.foliage -= count
+    chat_user.foliage_chat_donate += count
     chat.foliage += count
 
     t = CHAT_DONATE.format(user=user, chat=chat, count=count)

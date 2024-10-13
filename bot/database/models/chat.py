@@ -37,4 +37,5 @@ class ChatUser(Base, UserRelationshipMixin):
     )
 
     foliage: Mapped[int] = mapped_column(Integer, nullable=False, server_default="0")
+    foliage_chat_donate: Mapped[int] = mapped_column(Integer, nullable=False, server_default="0")
     walks: Mapped[int] = mapped_column(Integer, nullable=False, server_default="0")
