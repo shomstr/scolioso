@@ -39,5 +39,13 @@ TOP_USERS_GLOBAL: |
 TOP_USERS_CHAT: |
   <b>🌳 Статистика деревьев леса <u>{{ chat.title | e }}</u></b> <nl>
   {% for i, user in enumerate(users, start=1) %}
-  {{ formatted_top_number(i) }} {{ user.openmessage_link }} - {{ formatted_heght_tree(user.len_tree) }} <nl>
+  {{ formatted_top_number(i) }} {{ user.user.openmessage_link }} - {{ formatted_heght_tree(user.user.len_tree) }} <nl>
   {% endfor %}
+
+TOP_USERS_CHAT_DONATE: |
+  <b>🌳 Статистика деревьев леса <u>{{ chat.title | e }}</u></b> по листве <nl>
+  {% for i, user in enumerate(users, start=1) %}
+  {{ formatted_top_number(i) }} {{ user.user.openmessage_link }} - {{ user.foliage_chat_donate }} <nl>
+  {% endfor %}
+  <nl>
+  Всего пожертвовано листвы: {{ chat.foliage }}

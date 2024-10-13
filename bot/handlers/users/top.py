@@ -5,6 +5,7 @@ from aiogram.enums import ChatType
 from aiogram.types import Message
 
 from bot.database import Repositories
+from bot.database.models import User, ChatUser, Chat
 from bot.enums.top import ChatTop, GlobalTop
 from bot.filters import Fullmatch
 from bot.utils.texts import Texts
@@ -22,12 +23,24 @@ async def global_top(message: Message, repo: Repositories):
 
 
 @router.message(Fullmatch(*ChatTop.CHAT_TOP.value))
-async def chat_top(message: Message, repo: Repositories, bot: Bot):
+async def chat_top(message: Message, repo: Repositories, chat: Chat, bot: Bot):
     if message.chat.type == ChatType.PRIVATE:
         return await message.reply("Работает только в чатах")
 
-    users = await repo.chats_users.top_users(message.chat.id)
-    text = Texts.gettext("TOP_USERS_CHAT", context={"users": users, "chat": message.chat})
+    users = await repo.chats_users.top_users(message.chat.id, User.len_tree)
+
+    text = Texts.gettext("TOP_USERS_CHAT", context={"users": users, "chat": chat})
+
+    await message.reply(text)
+    return None
+
+
+@router.message(Fullmatch(*ChatTop.CHAT_TOP_DONATE.value))
+async def chat_top_donate(message: Message, repo: Repositories, chat: Chat, bot: Bot):
+    if message.chat.type == ChatType.PRIVATE:
+        return await message.reply("Работает только в чатах")
+    users = await repo.chats_users.top_users(message.chat.id, ChatUser.foliage_chat_donate)
+    text = Texts.gettext("TOP_USERS_CHAT_DONATE", context={"users": users, "chat": chat})
 
     await message.reply(text)
     return None
