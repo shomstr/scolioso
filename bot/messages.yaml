@@ -10,7 +10,7 @@ BAG_TEXTS: |
 
   <b>🌳 Высота дерева</b> <code>{{ tree }}</code> <nl>
 
-  <b>🍃 Лепестки</b> <code>{{ user.petals }}</code> <b>💧Вода</b> <code>{{ user.water }}</code> <nl>
+  <b>🍃 Лепестки</b> <code>{{ user.petals }}</code> <b>💧 Вода</b> <code>{{ user.water }}</code> <nl>
   {% if is_self %}<b>🍏 Яблок</b> {{ user.apples }} <nl>
   {% endif %}
   {% if is_self and check_datetime(user.vip_to) %}
@@ -21,7 +21,7 @@ BAG_TEXTS: |
   {% if check_walk %}
   <b>⏰ {{ next_walk }}</b>
   {% else %}
-  <b>⏰ Следующая прогулка через {{ next_walk }} </b>
+  <b>{{ next_walk }} </b>
   {% endif %}
 
   {% if chat_user %} <nl><nl>
