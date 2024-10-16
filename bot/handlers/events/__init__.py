@@ -4,8 +4,13 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from aiogram import Router
 
-from . import on_error, chat, user, channel
+from . import on_error
 
-routers: list[Router] = [on_error.router, user.router, chat.router, channel.router]
+routers: list[Router] = [
+    on_error.router,
+    # user.router,
+    # chat.router,
+    # channel.router
+]
 
 _all__ = ["routers"]
