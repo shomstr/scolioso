@@ -3,16 +3,17 @@ from typing import cast
 
 from aiogram import Router
 from aiogram.exceptions import TelegramRetryAfter
+from aiogram.filters import ExceptionTypeFilter
 from aiogram.types import ErrorEvent, Update, Message
 
 router = Router()
 logger = logging.getLogger(__name__)
 
 
-@router.error(TelegramRetryAfter)
-async def floodwait_error(exception: TelegramRetryAfter, event: ErrorEvent) -> None:
+@router.error(ExceptionTypeFilter(TelegramRetryAfter))
+async def floodwait_error(event: ErrorEvent) -> None:
     update: Update = event.update
-    retry_after = exception.retry_after
+    retry_after = event.exception.retry_after
 
     if message := update.message:
         chat = message.chat
@@ -20,6 +21,7 @@ async def floodwait_error(exception: TelegramRetryAfter, event: ErrorEvent) -> N
 
     elif query := update.callback_query:
         message = cast(Message, query.message)
+
         chat = message.chat
         chat_id = chat.id
 
@@ -35,7 +37,7 @@ async def floodwait_error(exception: TelegramRetryAfter, event: ErrorEvent) -> N
     else:
         return
 
-    logger.error(f"Флудвейт в чате: {chat_id} на {retry_after}")
+    logger.error(f"Флудвейт в чате {chat_id} на {retry_after} секунд")
 
 
 @router.errors()
