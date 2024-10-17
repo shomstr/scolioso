@@ -19,4 +19,4 @@ async def start(message: types.Message) -> None:
 
 @router.message(Command("help"))
 async def help(message: types.Message, user: User, repo: Repositories) -> None:
-    await message.reply(Texts.gettext("START"))
+    await message.reply(Texts.gettext("HELP"))
