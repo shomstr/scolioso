@@ -4,12 +4,12 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from aiogram import Router
 
-from . import on_error
+from . import on_error, user, chat
 
 routers: list[Router] = [
     on_error.router,
-    # user.router,
-    # chat.router,
+    user.router,
+    chat.router,
     # channel.router
 ]
 
