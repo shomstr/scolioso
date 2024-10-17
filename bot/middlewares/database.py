@@ -7,6 +7,7 @@ from aiogram.dispatcher.flags import get_flag
 from aiogram.enums import ChatType
 
 from bot.database import get_repo
+from bot.database.models import User
 
 if TYPE_CHECKING:
     from aiogram.types import TelegramObject
@@ -60,8 +61,8 @@ class GetUser(BaseMiddleware):
         user = await repo.users.get(us.id, *user_options)
 
         if not user:
-            user = await repo.users.create(id=us.id, name=us.full_name, username=us.username)
-            logger.info("New user")
+            user: User = await repo.users.create(id=us.id, name=us.full_name, username=us.username)
+            logger.info(f"Новый пользователь: {user.openmessage_link}")
 
         data["user"] = user
 
