@@ -12,7 +12,7 @@ from bot.database.models.mixins import UserRelationshipMixin
 class Chat(Base):
     __tablename__ = "chats"
 
-    title: Mapped[str] = mapped_column(String, nullable=False)
+    title: Mapped[str] = mapped_column(String(255), nullable=False)
 
     members: Mapped[list["ChatUser"]] = relationship(
         "ChatUser",

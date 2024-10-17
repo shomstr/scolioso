@@ -14,7 +14,7 @@ class User(Base):
     __tablename__ = "users"
     _repr_attrs = ["id", "name"]
 
-    name: Mapped[str] = mapped_column(String(32), nullable=True)
+    name: Mapped[str] = mapped_column(String(128), nullable=True)
     username: Mapped[str] = mapped_column(String(32), nullable=True)
 
     petals: Mapped[int] = mapped_column(Integer, server_default="0")
