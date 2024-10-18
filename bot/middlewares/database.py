@@ -51,12 +51,6 @@ class GetUser(BaseMiddleware):
 
         repo: Repositories = data["repo"]
 
-        user_flag = get_flag(data, "user", default=True)
-
-        if not user_flag:
-            data["user"] = None
-            return await handler(event, data)
-
         user_options = get_flag(data, "user_options", default=[])
         user = await repo.users.get(us.id, *user_options)
 
