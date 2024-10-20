@@ -7,10 +7,13 @@ from bot.utils.misc import check_datetime
 
 def formatted_heght_tree(height_tree: int) -> str:
     if height_tree < 100:
-        return f"{height_tree} см"
+        return f"{height_tree:_} см".replace("_", " ")
     if height_tree < 1000:
-        return f"{round(height_tree / 100, 1)} м"
-    return f"{round(height_tree / 1000, 1)} км"
+        height_tree = round(height_tree / 100, 1)
+        return f"{height_tree:_} м".replace("_", " ")
+
+    height_tree = round(height_tree / 1000, 1)
+    return f"{height_tree:_} км".replace("_", " ")
 
 
 def formatted_next_walk(user: User):
