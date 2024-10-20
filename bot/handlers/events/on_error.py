@@ -1,7 +1,7 @@
 import logging
 from typing import cast
 
-from aiogram import Router
+from aiogram import Router, F
 from aiogram.exceptions import TelegramRetryAfter
 from aiogram.filters import ExceptionTypeFilter
 from aiogram.types import ErrorEvent, Update, Message
@@ -10,7 +10,7 @@ router = Router()
 logger = logging.getLogger(__name__)
 
 
-@router.error(ExceptionTypeFilter(TelegramRetryAfter))
+@router.errors(ExceptionTypeFilter(TelegramRetryAfter), F.update.message.as_("message"))
 async def floodwait_error(event: ErrorEvent) -> None:
     update: Update = event.update
     retry_after = event.exception.retry_after
