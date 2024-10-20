@@ -96,7 +96,7 @@ async def walk(message: Message, user: User, chat_user: ChatUser) -> Any:
 
 
 @router.message(or_f(FullmatchWithArgs(*MainMenuVars.WATERING.value, user=False), Fullmatch(*MainMenuVars.WATERING.value)))
-async def watering(message: Message, user: User, count: int | None) -> Any:
+async def watering(message: Message, user: User, count: int | None = None) -> Any:
     count = count if count else 1
     if user.water < count:
         return await message.reply("У вас нет воды для полива")
@@ -113,7 +113,7 @@ async def watering(message: Message, user: User, count: int | None) -> Any:
 
 
 @router.message(or_f(FullmatchWithArgs(*MainMenuVars.SMOKING.value, user=False), Fullmatch(*MainMenuVars.SMOKING.value)))
-async def smoking(message: Message, user: User, count: int | None) -> Any:
+async def smoking(message: Message, user: User, count: int | None = None) -> Any:
     count = count if count else 1
     if user.petals < count:
         return await message.reply("Недостаточно листьев")

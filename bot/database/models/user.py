@@ -1,13 +1,13 @@
 from datetime import datetime
 from typing import TYPE_CHECKING
 
-from sqlalchemy import String, Integer, DateTime, func
-from sqlalchemy.orm import mapped_column, Mapped, relationship
+from sqlalchemy import String, DateTime, func, BigInteger
+from sqlalchemy.orm import mapped_column, Mapped
 from .base import Base
 from ...utils.links import get_openmessage_link, get_ping_link
 
 if TYPE_CHECKING:
-    from .chat import ChatUser
+    pass
 
 
 class User(Base):
@@ -17,16 +17,13 @@ class User(Base):
     name: Mapped[str] = mapped_column(String(128), nullable=True)
     username: Mapped[str] = mapped_column(String(32), nullable=True)
 
-    petals: Mapped[int] = mapped_column(Integer, server_default="0")
-    water: Mapped[int] = mapped_column(Integer, server_default="0")
-    len_tree: Mapped[int] = mapped_column(Integer, server_default="0")
+    petals: Mapped[int] = mapped_column(BigInteger, server_default="0")
+    apples: Mapped[int] = mapped_column(BigInteger, server_default="0")
+    water: Mapped[int] = mapped_column(BigInteger, server_default="0")
+    len_tree: Mapped[int] = mapped_column(BigInteger, server_default="0")
 
     last_walk: Mapped[datetime] = mapped_column(DateTime(), nullable=True)
-
-    chats_users: Mapped[list["ChatUser"]] = relationship("ChatUser", uselist=True, back_populates="user")
-
     vip_to: Mapped[datetime] = mapped_column(DateTime(), server_default=func.now())
-    apples: Mapped[int] = mapped_column(Integer, server_default="0")
 
     @property
     def ping_link(self) -> str:
