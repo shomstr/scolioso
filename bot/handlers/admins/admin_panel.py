@@ -7,9 +7,9 @@ from aiogram.types import Message
 
 from bot.database import Repositories
 from bot.enums.admin_panel import MessageCommands
-from bot.filters import IsAdmin, StartsWith
+from bot.filters import IsAdmin, FullmatchWithArgs
 from bot.messages import BOT_INFO
-from bot.utils.aiogram import get_user_by_username, get_user_from_message, send_message
+from bot.utils.aiogram import get_user_by_username, send_message
 from bot.utils.misc import bot_info_dict
 
 router = Router()
@@ -25,11 +25,8 @@ async def bot_info(message: types.Message) -> None:
     await message.answer(text=text)
 
 
-@router.message(StartsWith(MessageCommands.GIVE_APPLE.value))
-async def give_apple(message: Message, repo: Repositories, command: str) -> Any:
-    us = get_user_from_message(message, command)
-    t = message.text.lower().replace(command, "")
-
+@router.message(FullmatchWithArgs(*MessageCommands.GIVE_APPLE.value))
+async def give_apple(message: Message, repo: Repositories, us: dict | None, count: int) -> Any:
     if not us:
         return await message.answer("Укажите юзера")
 
@@ -42,20 +39,17 @@ async def give_apple(message: Message, repo: Repositories, command: str) -> Any:
         if not user:
             return await message.reply("Юзер не найден")
 
-    apples = int(t.split()[1])
-
-    user.apples += apples
+    user.apples += count
     await repo.users.update(user)
-    await message.reply(f"Вы выдали {apples} 🍎 {user.ping_link}")
-    await send_message(user.id, f"Вам выдали {apples} 🍎")
+
+    await message.reply(f"Вы выдали {count} 🍎 {user.ping_link}")
+    await send_message(user.id, f"Вам выдали {count} 🍎")
+
     return None
 
 
-@router.message(StartsWith(MessageCommands.GIVE_WATER.value))
-async def give_water(message: Message, repo: Repositories, command: str) -> Any:
-    us = get_user_from_message(message, command)
-    t = message.text.lower().replace(command, "")
-
+@router.message(FullmatchWithArgs(*MessageCommands.GIVE_WATER.value))
+async def give_water(message: Message, repo: Repositories, us: dict | None, count: int) -> Any:
     if not us:
         return await message.answer("Укажите юзера")
 
@@ -68,10 +62,10 @@ async def give_water(message: Message, repo: Repositories, command: str) -> Any:
         if not user:
             return await message.reply("Юзер не найден")
 
-    water = int(t.split()[1])
-
-    user.water += water
+    user.water += count
     await repo.users.update(user)
-    await message.reply(f"Вы выдали {water} 💧 {user.ping_link}")
-    await send_message(user.id, f"Вам выдали {water} 💧")
+
+    await message.reply(f"Вы выдали {count} 💧 {user.ping_link}")
+    await send_message(user.id, f"Вам выдали {count} 💧")
+
     return None

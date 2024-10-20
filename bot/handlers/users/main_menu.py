@@ -12,7 +12,7 @@ from bot.config import MIN_LENGHT_TREE, MAX_LENGHT_TREE, MIN_PETALS_WALK, MIN_WA
 from bot.database import Repositories
 from bot.database.models import User, ChatUser, Chat
 from bot.enums.menus import MainMenuVars
-from bot.filters import StartsWith, FullmatchWithArgs
+from bot.filters import FullmatchWithArgs, Fullmatch
 from bot.messages import (
     WALK_TEXTS,
     WATERING_TEXTS,
@@ -27,18 +27,13 @@ router = Router()
 logger = logging.getLogger()
 
 
-@router.message(
-    or_f(
-        FullmatchWithArgs(*MainMenuVars.BAG.value, count=False),
-        FullmatchWithArgs(*MainMenuVars.BAG.value, user=False, count=False),
-    )
-)
+@router.message(or_f(FullmatchWithArgs(*MainMenuVars.BAG.value, count=False), Fullmatch(*MainMenuVars.BAG.value)))
 async def bag(
     message: Message,
     repo: Repositories,
     user: User,
     chat_user: ChatUser,
-    us: dict | None,
+    us: dict | None = None,
 ):
     if not us:
         is_self = True
@@ -79,7 +74,7 @@ async def bag(
     return None
 
 
-@router.message(StartsWith(MainMenuVars.WALK.value))
+@router.message(Fullmatch(*MainMenuVars.WALK.value))
 async def walk(message: Message, user: User, chat_user: ChatUser) -> Any:
     if user.last_walk and user.last_walk + timedelta(hours=walk_time(user)) > datetime.now():
         return await message.reply(f"Еще рано, {formatted_next_walk(user)}")
@@ -100,12 +95,7 @@ async def walk(message: Message, user: User, chat_user: ChatUser) -> Any:
     return None
 
 
-@router.message(
-    or_f(
-        FullmatchWithArgs(*MainMenuVars.WATERING.value, user=False),
-        FullmatchWithArgs(*MainMenuVars.WATERING.value, user=False, count=False),
-    )
-)
+@router.message(or_f(FullmatchWithArgs(*MainMenuVars.WATERING.value, user=False), Fullmatch(*MainMenuVars.WATERING.value)))
 async def watering(message: Message, user: User, count: int | None) -> Any:
     count = count if count else 1
     if user.water < count:
@@ -122,12 +112,7 @@ async def watering(message: Message, user: User, count: int | None) -> Any:
     return None
 
 
-@router.message(
-    or_f(
-        FullmatchWithArgs(*MainMenuVars.SMOKING.value, user=False),
-        FullmatchWithArgs(*MainMenuVars.SMOKING.value, user=False, count=False),
-    )
-)
+@router.message(or_f(FullmatchWithArgs(*MainMenuVars.SMOKING.value, user=False), Fullmatch(*MainMenuVars.SMOKING.value)))
 async def smoking(message: Message, user: User, count: int | None) -> Any:
     count = count if count else 1
     if user.petals < count:
