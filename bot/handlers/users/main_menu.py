@@ -19,7 +19,7 @@ from bot.messages import (
     SMOKING_TEXTS,
     CHAT_DONATE,
 )
-from bot.utils.aiogram import get_user_by_username
+from bot.utils.aiogram import get_user_by_username, send_message
 from bot.utils.texts import Texts
 from bot.utils.tree import formatted_heght_tree, formatted_next_walk, walk_time, check_walk
 
@@ -141,4 +141,28 @@ async def opad(message: Message, user: User, chat_user: ChatUser, chat: Chat, co
 
     t = CHAT_DONATE.format(user=user, chat=chat, count=count)
     await message.reply(t)
+    return None
+
+
+@router.message(FullmatchWithArgs("передать яблоко", "передать яблоки"))
+async def transfer_apples(message: Message, repo: Repositories, user: User, us: dict, count: int) -> Any:
+    if user.apples < count:
+        return await message.reply("Недостаточно яблок для передачи")
+
+    if us.get("user_id"):
+        other_user = await repo.users.get(us.get("user_id"))
+        if not other_user:
+            return await message.reply("Юзер не найден")
+    else:
+        other_user = await get_user_by_username(repo, us.get("username"))
+        if not other_user:
+            return await message.reply("Юзер не найден")
+
+    user.apples -= count
+    other_user.apples += count
+    await repo.users.update(other_user)
+
+    await message.reply(f"Вы передали {count} 🍏 {other_user.ping_link}")
+
+    await send_message(other_user.id, f"{user.openmessage_link} передал вам {count} 🍏 ")
     return None
