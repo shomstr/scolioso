@@ -39,7 +39,7 @@ async def get_user_by_username(repo: Repositories, username: str, *user_options)
         return None
 
 
-def get_user_from_message(message: Message, command: str | None = None) -> dict | None:
+async def get_user_from_message(message: Message, command: str | None = None) -> dict | None:
     text = message.text.lower()
     if command:
         text = text.replace(command, "")
@@ -47,12 +47,16 @@ def get_user_from_message(message: Message, command: str | None = None) -> dict 
     for i in text.split():
         if i.startswith("@"):
             if i[1:].isdigit():
-                return {"user_id": int(i[1:])}  # Только user_id
-            return {"username": i[1:]}  # Только username
+                return {"user_id": int(i[1:])}
+            return {"username": i[1:]}
 
     else:
         if message.reply_to_message:
-            return {"user_id": message.reply_to_message.from_user.id}
+            reply_user = message.reply_to_message.from_user
+            if reply_user.id == (await bot.get_me()).id:
+                return {"user_id": message.from_user.id}
+
+            return {"user_id": reply_user.id}
         return None
 
 

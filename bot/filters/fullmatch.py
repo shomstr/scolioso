@@ -38,7 +38,7 @@ class FullmatchWithArgs(Filter):
                 t = e.groupdict()
                 return {
                     "command": command,
-                    "us": get_user_from_message(message, command) if self.user else None,
+                    "us": await get_user_from_message(message, command) if self.user else None,
                     "count": int(t.get("count")) if self.count else None,
                 }
 
