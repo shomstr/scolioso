@@ -29,6 +29,8 @@ async def bot_info(message: types.Message) -> None:
 async def give_apple(message: Message, repo: Repositories, us: dict | None, count: int) -> Any:
     if not us:
         return await message.answer("Укажите юзера")
+    if count > 10_000:
+        return await message.reply("Ограничение на выдачу 10000")
 
     if us.get("user_id"):
         user = await repo.users.get(us.get("user_id"))
@@ -52,6 +54,8 @@ async def give_apple(message: Message, repo: Repositories, us: dict | None, coun
 async def give_water(message: Message, repo: Repositories, us: dict | None, count: int) -> Any:
     if not us:
         return await message.answer("Укажите юзера")
+    if count > 10_000:
+        return await message.reply("Ограничение на выдачу 10_000")
 
     if us.get("user_id"):
         user = await repo.users.get(us.get("user_id"))
