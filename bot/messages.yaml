@@ -49,3 +49,16 @@ TOP_USERS_CHAT_DONATE: |
   {% endfor %}
   <nl>
   Всего пожертвовано листвы: {{ chat.foliage }}
+
+TOP_USERS_CHAT_SMOKINGS: |
+  <b>🌳 Статистика деревьев по хапу <u>{{ chat.title | e }}</u></b> по листве <nl>
+  {% for i, user in enumerate(users, start=1) %}
+  {{ formatted_top_number(i) }} {{ user.user.openmessage_link }} - {{ user.user.all_smokings }} <nl>
+  {% endfor %}
+  <nl>
+
+TOP_USERS_GLOBAL_SMOKINGS: |
+  <b>🌳 Статистика деревьев мира по хапу :</b> <nl>
+  {% for i, user in enumerate(users, start=1) %}
+  {{ formatted_top_number(i) }} {{ user.openmessage_link }} - {{ user.all_smokings }} <nl>
+  {% endfor %}

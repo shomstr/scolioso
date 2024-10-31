@@ -119,6 +119,8 @@ async def smoking(message: Message, user: User, count: int | None = None) -> Any
         return await message.reply("Недостаточно листьев")
 
     user.petals -= count
+    user.all_smokings += count
+
     t = random.choice(SMOKING_TEXTS)
     text = t.format(user=user, count=count)
     await message.reply(text)

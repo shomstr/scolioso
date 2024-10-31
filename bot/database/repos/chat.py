@@ -54,10 +54,7 @@ class ChatsUsersRepo(BaseRepo):
         q = (
             select(ChatUser)
             .join(User)
-            .where(
-                ChatUser.user_id == User.id,
-                ChatUser.chat_id == chat_id,
-            )
+            .where(ChatUser.user_id == User.id, ChatUser.chat_id == chat_id, order_by != 0)
             .order_by(desc(order_by))
             .limit(50)
             .options(joinedload(ChatUser.user))

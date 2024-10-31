@@ -14,15 +14,16 @@ router = Router()
 logger = logging.getLogger()
 
 
-@router.message(Fullmatch(*GlobalTop.GLOBAL_TOP.value))
+# Топ деревьев
+@router.message(Fullmatch(*GlobalTop.GLOBAL_TOP))
 async def global_top(message: Message, repo: Repositories):
-    users = await repo.users.top_users()
+    users = await repo.users.top_users(User.len_tree)
     text = Texts.gettext("TOP_USERS_GLOBAL", context={"users": users})
 
     await message.reply(text, parse_mode="HTML")
 
 
-@router.message(Fullmatch(*ChatTop.CHAT_TOP.value))
+@router.message(Fullmatch(*ChatTop.CHAT_TOP))
 async def chat_top(message: Message, repo: Repositories, chat: Chat, bot: Bot):
     if message.chat.type == ChatType.PRIVATE:
         return await message.reply("Работает только в чатах")
@@ -35,7 +36,7 @@ async def chat_top(message: Message, repo: Repositories, chat: Chat, bot: Bot):
     return None
 
 
-@router.message(Fullmatch(*ChatTop.CHAT_TOP_DONATE.value))
+@router.message(Fullmatch(*ChatTop.CHAT_TOP_DONATE))
 async def chat_top_donate(message: Message, repo: Repositories, chat: Chat, bot: Bot):
     if message.chat.type == ChatType.PRIVATE:
         return await message.reply("Работает только в чатах")
@@ -44,3 +45,23 @@ async def chat_top_donate(message: Message, repo: Repositories, chat: Chat, bot:
 
     await message.reply(text)
     return None
+
+
+@router.message(Fullmatch(*ChatTop.CHAT_TOP_SMOKING))
+async def chat_top_smoking(message: Message, repo: Repositories, chat: Chat, bot: Bot):
+    if message.chat.type == ChatType.PRIVATE:
+        return await message.reply("Работает только в чатах")
+
+    users = await repo.chats_users.top_users(message.chat.id, User.all_smokings)
+    text = Texts.gettext("TOP_USERS_CHAT_SMOKINGS", context={"users": users, "chat": chat})
+
+    await message.reply(text)
+    return None
+
+
+@router.message(Fullmatch(*GlobalTop.GLOBAL_TOP_SMOKINGS))
+async def global_top_smoking(message: Message, repo: Repositories):
+    users = await repo.users.top_users(User.all_smokings)
+    text = Texts.gettext("TOP_USERS_GLOBAL_SMOKINGS", context={"users": users})
+
+    await message.reply(text, parse_mode="HTML")

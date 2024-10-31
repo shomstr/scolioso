@@ -22,7 +22,7 @@ class UsersRepo(BaseRepo):
 
         return (await self.session.execute(q)).scalars().all()
 
-    async def top_users(self) -> Sequence[User]:
-        q = select(User).order_by(desc(User.len_tree)).limit(50)
+    async def top_users(self, order_by: str) -> Sequence[User]:
+        q = select(User).where(order_by != 0).order_by(desc(order_by)).limit(50)
 
         return (await self.session.execute(q)).scalars().all()

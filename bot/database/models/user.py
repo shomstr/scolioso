@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import TYPE_CHECKING
 
-from sqlalchemy import String, DateTime, func, BigInteger
+from sqlalchemy import String, DateTime, func, BigInteger, Integer
 from sqlalchemy.orm import mapped_column, Mapped
 from .base import Base
 from ...utils.links import get_openmessage_link, get_ping_link
@@ -24,6 +24,8 @@ class User(Base):
 
     last_walk: Mapped[datetime] = mapped_column(DateTime(), nullable=True)
     vip_to: Mapped[datetime] = mapped_column(DateTime(), server_default=func.now())
+
+    all_smokings = mapped_column(Integer, server_default="0")
 
     @property
     def ping_link(self) -> str:
