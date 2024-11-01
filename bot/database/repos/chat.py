@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import Sequence
 
 from sqlalchemy import select, update, desc
-from sqlalchemy.orm import selectinload, joinedload
+from sqlalchemy.orm import selectinload, joinedload, InstrumentedAttribute
 
 from .base import BaseRepo
 from bot.database.models import User, Chat, ChatUser
@@ -50,13 +50,13 @@ class ChatsUsersRepo(BaseRepo):
         await self.session.execute(q)
         await self.session.commit()
 
-    async def top_users(self, chat_id: int, order_by: str) -> Sequence[ChatUser]:
+    async def top_users(self, chat_id: int, order_by: InstrumentedAttribute, limit=50) -> Sequence[ChatUser]:
         q = (
             select(ChatUser)
             .join(User)
             .where(ChatUser.user_id == User.id, ChatUser.chat_id == chat_id, order_by != 0)
             .order_by(desc(order_by))
-            .limit(50)
+            .limit(limit)
             .options(joinedload(ChatUser.user))
         )
 

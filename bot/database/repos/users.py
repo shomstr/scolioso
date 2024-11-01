@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import Sequence
 
 from sqlalchemy import select, desc
-from sqlalchemy.orm import selectinload
+from sqlalchemy.orm import selectinload, InstrumentedAttribute
 
 from .base import BaseRepo
 from bot.database.models import User
@@ -22,7 +22,7 @@ class UsersRepo(BaseRepo):
 
         return (await self.session.execute(q)).scalars().all()
 
-    async def top_users(self, order_by: str) -> Sequence[User]:
-        q = select(User).where(order_by != 0).order_by(desc(order_by)).limit(50)
+    async def top_users(self, order_by: InstrumentedAttribute, limit=50) -> Sequence[User]:
+        q = select(User).where(order_by != 0).order_by(desc(order_by)).limit(limit)
 
         return (await self.session.execute(q)).scalars().all()
