@@ -5,11 +5,11 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from aiogram import Dispatcher, Router
 
-from . import admins, events, users
+from . import admins, events, treegame
 
 logger = logging.getLogger("handlers")
 
-all_routers: list[Router] = [*users.routers, *events.routers, *admins.routers]
+all_routers: list[Router] = [*treegame.routers, *events.routers, *admins.routers]
 
 
 def setup_routers(dp: Dispatcher) -> None:
