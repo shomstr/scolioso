@@ -91,6 +91,7 @@ class GetChat(BaseMiddleware):
             chat = await repo.chats.create(id=_chat.id, title=_chat.title)
 
         data["chat"] = chat
+        chat.name = _chat.title
 
         await handler(event, data)
         return None
