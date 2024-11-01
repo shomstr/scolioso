@@ -1,18 +1,15 @@
-from __future__ import annotations
-
-
-from sqlalchemy import String, BigInteger, ForeignKey, Integer
+from sqlalchemy import BigInteger, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from bot.database.models.base import Base
-
 from bot.database.models.mixins import UserRelationshipMixin
+from bot.database.models.types import str_255, integer
 
 
 class Chat(Base):
     __tablename__ = "chats"
 
-    title: Mapped[str] = mapped_column(String(255), nullable=False)
+    title: Mapped[str_255] = mapped_column(nullable=False)
 
     members: Mapped[list["ChatUser"]] = relationship(
         "ChatUser",
@@ -24,7 +21,7 @@ class Chat(Base):
         post_update=True,
     )
 
-    foliage: Mapped[int] = mapped_column(Integer, nullable=False, server_default="0")
+    foliage: Mapped[integer]
 
 
 class ChatUser(Base, UserRelationshipMixin):
@@ -36,6 +33,6 @@ class ChatUser(Base, UserRelationshipMixin):
         "Chat", uselist=False, foreign_keys=chat_id, remote_side="Chat.id", back_populates="members", lazy="raise"
     )
 
-    foliage: Mapped[int] = mapped_column(Integer, nullable=False, server_default="0")
-    foliage_chat_donate: Mapped[int] = mapped_column(Integer, nullable=False, server_default="0")
-    walks: Mapped[int] = mapped_column(Integer, nullable=False, server_default="0")
+    foliage: Mapped[integer]
+    foliage_chat_donate: Mapped[integer]
+    walks: Mapped[integer]

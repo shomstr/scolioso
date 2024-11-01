@@ -7,12 +7,11 @@ from sqlalchemy import func, DateTime, BigInteger, ForeignKey
 from sqlalchemy.orm import mapped_column, Mapped, declared_attr, relationship
 
 if TYPE_CHECKING:
-    from .user import User
+    from .user_models import User
 
 
 class ReprMixin:
     _repr_max_length = 25
-
     _repr_attrs = []
 
     def _repr_attrs_str(self):
@@ -21,7 +20,7 @@ class ReprMixin:
         values = []
         for key in self._repr_attrs:
             if not hasattr(self, key):
-                raise KeyError("{} has incorrect attribute '{}' in " "__repr__attrs__".format(self.__class__, key))
+                raise KeyError("{} has incorrect attribute '{}' in " "_repr_attrs_".format(self.__class__, key))
             value = getattr(self, key)
 
             value = str(value)
@@ -61,19 +60,19 @@ class SerializeMixin:
 
 
 class DateTimeMixin:
-    __datetime_func = func.now()
-    __datetime_timezone: bool = False
+    _datetime_func = func.now()
+    _datetime_timezone: bool = False
 
     @declared_attr
     def created_at(cls) -> Mapped[datetime]:
         return mapped_column(
-            DateTime(timezone=cls.__datetime_timezone),
-            server_default=cls.__datetime_func,
+            DateTime(timezone=cls._datetime_timezone),
+            server_default=cls._datetime_func,
         )
 
     @declared_attr
     def updated_at(cls) -> Mapped[datetime]:
-        return mapped_column(DateTime(timezone=cls.__datetime_timezone), server_onupdate=cls.__datetime_func)
+        return mapped_column(DateTime(timezone=cls._datetime_timezone), server_onupdate=cls._datetime_func)
 
 
 class UserRelationshipMixin:
