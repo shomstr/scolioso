@@ -1,9 +1,9 @@
 from sqlalchemy import BigInteger, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from bot.database.models.base import Base
-from bot.database.models.mixins import UserRelationshipMixin
-from bot.database.models.types import str_255, integer
+from .base_models import Base
+from .mixins import UserRelationshipMixin
+from .types import str_255, integer
 
 
 class Chat(Base):

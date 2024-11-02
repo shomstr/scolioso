@@ -3,7 +3,8 @@ from typing import TYPE_CHECKING
 
 from sqlalchemy import String, DateTime, func
 from sqlalchemy.orm import mapped_column, Mapped
-from .base import Base
+
+from .base_models import Base
 from .types import integer
 from ...utils.links import get_openmessage_link, get_ping_link
 
