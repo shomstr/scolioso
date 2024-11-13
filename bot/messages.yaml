@@ -2,7 +2,7 @@ START: |
   👋🏻 Вы авторизовались в игре Дерево, чтобы ознакомиться с игрой, прочтите FAQ в нашем Telegram канале
 
 HELP: |
-  Помощь по игре можно посмотреть <a href="https://t.me/TreeBotChannel">тут</a>.
+  Помощь по игре можно посмотреть <a href="https://t.me/TreeStyle">тут</a>.
 
 BAG_TEXTS: |
   <b>👨🏼‍🌾 Информация о садовнике</b> {{ user.openmessage_link }}
