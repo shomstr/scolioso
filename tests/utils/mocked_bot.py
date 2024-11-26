@@ -1,4 +1,5 @@
 """Mocked bot."""
+
 from collections import deque
 from collections.abc import AsyncGenerator
 from typing import TYPE_CHECKING, Any

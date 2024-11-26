@@ -42,11 +42,11 @@ async def bag(
         if us.get("user_id"):
             user = await repo.users.get(us.get("user_id"))
             if not user:
-                return await message.reply("Юзер не найден")
+                return await message.answer("Юзер не найден")
         else:
             user = await get_user_by_username(repo, us.get("username"))
             if not user:
-                return await message.reply("Юзер не найден")
+                return await message.answer("Юзер не найден")
 
         if message.chat.type == ChatType.PRIVATE:
             chat_user = None

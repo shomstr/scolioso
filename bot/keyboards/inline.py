@@ -9,3 +9,35 @@ start_keyboard = InlineKeyboardBuilder(
         ]
     ]
 ).as_markup()
+
+
+def main_keyboard_inline():
+    kb = InlineKeyboardBuilder()
+
+    (kb.button(text="Полить", callback_data="water"),)
+    (kb.button(text="Прогулка", callback_data="walking"),)
+    (kb.button(text="Садовник", callback_data="gardener"),)
+
+    kb.adjust(2)
+    return kb.as_markup(resize_keyboard=True)
+
+
+def start_keyboard_inline():
+    kb = InlineKeyboardBuilder()
+
+    (kb.button(text="☎️ Помощь", callback_data="help"),)
+    (kb.button(text="🌲 Начать игру", callback_data="start_game"),)
+
+    kb.adjust(1)
+    return kb.as_markup(resize_keyboard=True)
+
+
+def help_keyboard_inline(num: int):
+    kb = InlineKeyboardBuilder()
+
+    (kb.button(text="⬅️", callback_data=f"help_prev_{num}"),)
+    (kb.button(text=f"{num}", callback_data="wed"),)
+    (kb.button(text="➡️", callback_data=f"help_next_{num}"),)
+
+    kb.adjust(3)
+    return kb.as_markup(resize_keyboard=True)

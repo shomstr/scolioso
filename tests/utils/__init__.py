@@ -1,4 +1,5 @@
 """Utils for tests."""
+
 from .mocked_bot import MockedBot
 from .mocked_redis import MockedRedis
 

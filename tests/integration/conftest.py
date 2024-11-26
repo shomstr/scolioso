@@ -1,4 +1,5 @@
 """Configuration for integrational tests."""
+
 import asyncio
 
 import pytest

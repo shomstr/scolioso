@@ -1,11 +1,16 @@
+from aiogram.types import BotCommand, BotCommandScopeAllPrivateChats, BotCommandScopeAllGroupChats
 from aiogram import Bot
-from aiogram.types import BotCommand, BotCommandScopeDefault
 
 
 async def set_commands(bot: Bot):
     commands = [
-        BotCommand(command="start", description="👋 Start"),
-        BotCommand(command="help", description="👋 Help"),
+        BotCommand(command="start", description="🌲 Начать играть"),
+        BotCommand(command="help", description="☎️ Помощь и поддержка"),
     ]
 
-    await bot.set_my_commands(commands, BotCommandScopeDefault())
+    await bot.set_my_commands(commands, BotCommandScopeAllPrivateChats())
+
+
+async def del_commands(bot: Bot):
+    await bot.delete_my_commands(BotCommandScopeAllGroupChats())
+    await bot.delete_my_commands(BotCommandScopeAllPrivateChats())

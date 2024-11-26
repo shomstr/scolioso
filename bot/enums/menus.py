@@ -1,4 +1,5 @@
 from enum import StrEnum, Enum
+import re
 
 
 class Emoji(StrEnum):
@@ -10,7 +11,7 @@ class Emoji(StrEnum):
 class MainMenu(StrEnum):
     WALK = "Прогулка"
     WATERING = "🚿 Полить"
-    BAG = "👨🏻‍🌾 Садовник"
+    BAG = "🎅 Садовник"
 
 
 class MainMenuVars(Enum):
@@ -18,3 +19,8 @@ class MainMenuVars(Enum):
     WATERING = [MainMenu.WATERING.lower(), "полив", "полить"]
     BAG = [MainMenu.BAG.lower(), "садовник", f"{Emoji.TREE} Дерево".lower(), "дерево"]
     SMOKING = ["хапнуть", "скурить", "хап"]
+    KEYBOARD = ["клава", "клавиатура", "+клава", "+кл", "кл", "+клавиатура", "+кнопки" "кнопки"]
+
+
+re_keyboard = re.compile(r"клава|клавиатура|\+клава|\+кл|\+клавиатура|\+кнопки|кнопки|кл", re.IGNORECASE)
+re_help = re.compile(r"(помощь|хелп)", re.IGNORECASE)

@@ -37,7 +37,7 @@ REDIS_USE=True
 
 #### For PostgreSQL
 ```bash
-poetry add asyncpg 
+poetry add asyncpg
 ````
 #### for MySQL
 ```bash

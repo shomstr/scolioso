@@ -11,4 +11,3 @@ class Base(DeclarativeBase, ReprMixin, SerializeMixin):
     __abstract__ = True
 
     id: Mapped[intpk]
-

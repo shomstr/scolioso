@@ -7,7 +7,7 @@ from aiogram import Bot
 
 from bot.config import DEFAULT_TZ, bot, dp
 from bot.settings import settings
-from bot.utils.bot_commands import set_commands
+from bot.utils.bot_commands import set_commands, del_commands
 from bot.utils.connect_to_services import test_redis_pool, test_database_pool
 from bot.utils.log import init_logger, _get_telegram_handler
 from bot.handlers import setup_routers
@@ -19,6 +19,7 @@ logger = logging.getLogger(__name__)
 
 @dp.startup()
 async def on_startup(bot: Bot) -> None:
+    await del_commands(bot)
     await set_commands(bot)
     user = await bot.me()
 
@@ -71,6 +72,7 @@ async def _main() -> None:
 
     setup_middlewares(dp)
     setup_routers(dp)
+    # ReplyKeyboardRemove() короче надо это использовать при первом запуске
 
     await bot.delete_webhook(drop_pending_updates=settings.bot.drop_pending_updates)
 

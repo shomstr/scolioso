@@ -54,10 +54,11 @@ class GetUser(BaseMiddleware):
         user_options = get_flag(data, "user_options", default=[])
         user = await repo.users.get(us.id, *user_options)
 
+        data["is_new_user"] = False
         if not user:
             user: User = await repo.users.create(id=us.id, name=us.full_name, username=us.username)
             logger.info(f"Новый пользователь: {user.openmessage_link}")
-
+            data["is_new_user"] = True
         data["user"] = user
 
         await handler(event, data)

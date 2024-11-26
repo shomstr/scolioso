@@ -36,12 +36,12 @@ class DatabaseSettings(BaseSettings):
     model_config = SettingsConfigDict(env_prefix="DB_")
 
     def build_postgres_url(
-            self,
+        self,
     ) -> str:
         return f"postgresql+{PostgreSQLDrivers.ASYNC_DRIVER}://" f"{self.user}:{self.password}" f"@{self.ip}/{self.name}"
 
     def build_mysql_url(
-            self,
+        self,
     ) -> str:
         return f"mysql+{MySQLDrivers.ASYNC_DRIVER}://" f"{self.user}:{self.password}" f"@{self.ip}/{self.name}"
 
