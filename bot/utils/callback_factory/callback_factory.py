@@ -11,6 +11,6 @@ class prev_data(CallbackData, prefix="help_prev"):
     num: int
 
 
-class next_data(CallbackData, prefix="next_help"):
+class next_data(CallbackData, prefix="help_next"):
     skill: str
     num: int

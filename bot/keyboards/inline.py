@@ -1,5 +1,6 @@
 from aiogram.types import InlineKeyboardButton
 from aiogram.utils.keyboard import InlineKeyboardBuilder
+from bot.utils.callback_factory.callback_factory import next_data, prev_data
 
 start_keyboard = InlineKeyboardBuilder(
     markup=[
@@ -35,9 +36,9 @@ def start_keyboard_inline():
 def help_keyboard_inline(num: int):
     kb = InlineKeyboardBuilder()
 
-    (kb.button(text="⬅️", callback_data=f"help_prev_{num}"),)
+    (kb.button(text="⬅️", callback_data=prev_data(skill="help_prev_", num=num)),)
     (kb.button(text=f"{num}", callback_data="wed"),)
-    (kb.button(text="➡️", callback_data=f"help_next_{num}"),)
+    kb.button(text="➡️", callback_data=next_data(skill="help_next_", num=num))
 
     kb.adjust(3)
     return kb.as_markup(resize_keyboard=True)

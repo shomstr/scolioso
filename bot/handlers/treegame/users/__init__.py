@@ -4,10 +4,11 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from aiogram import Router
 
-from . import start_help, main_menu, top, converter, start_inline, main_menu_inline
+from . import start_help, main_menu, top, converter, start_inline, main_menu_inline, gpt
 
 routers: list[Router] = [
     start_help.router,
+    gpt.router,
     main_menu.router,
     top.router,
     converter.router,
