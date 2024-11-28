@@ -9,7 +9,7 @@ router = Router()
 @router.message(F.text.regexp(menus.re_gpt, mode="fullmatch"))
 async def gpt_handler(message: Message) -> None:
     msgp = " ".join(message.text.split()[1:])
-    text = gpt_thinks(msgp)
+    text = await gpt_thinks(msgp)
     await message.answer(text)
     await message.answer(msgp)
 
