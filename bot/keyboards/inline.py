@@ -33,6 +33,16 @@ def start_keyboard_inline():
     return kb.as_markup(resize_keyboard=True)
 
 
+def help_keyboard():
+    kb = InlineKeyboardBuilder()
+
+    (kb.button(text="☎️ Помощь", callback_data="help"),)
+    (kb.button(text="🆘️ Поддержка", callback_data="start_game"),)
+
+    kb.adjust(1)
+    return kb.as_markup(resize_keyboard=True)
+
+
 def help_keyboard_inline(num: int):
     kb = InlineKeyboardBuilder()
 

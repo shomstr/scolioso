@@ -24,3 +24,4 @@ class MainMenuVars(Enum):
 
 re_keyboard = re.compile(r"клава|клавиатура|\+клава|\+кл|\+клавиатура|\+кнопки|кнопки|кл", re.IGNORECASE)
 re_help = re.compile(r"(помощь|хелп)", re.IGNORECASE)
+re_gpt = re.compile(r"дерево\s*(.*)", re.IGNORECASE)

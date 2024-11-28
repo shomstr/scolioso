@@ -8,7 +8,7 @@ from bot.database.models import User, ChatUser
 from bot.enums import menus
 from bot.database.engine import Repositories
 from bot.keyboards.default import main_menu
-from bot.keyboards.inline import start_keyboard_inline, main_keyboard_inline
+from bot.keyboards.inline import start_keyboard_inline, main_keyboard_inline, help_keyboard
 from bot.utils.texts import Texts
 
 router = Router(name=__name__)
@@ -24,7 +24,7 @@ async def example_usage(msg: Message):
 @router.message(F.text.regexp(menus.re_help, mode="fullmatch"))
 async def help(msg: types.Message, user: User, repo: Repositories) -> None:
     if msg.chat.type == ChatType.PRIVATE:
-        return await msg.reply(Texts.gettext("HELP"))
+        return await msg.reply(Texts.gettext("HELP"), reply_markup=help_keyboard())
 
     await msg.reply(Texts.gettext("HELP_CHAT"))
     return None

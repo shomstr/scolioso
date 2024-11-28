@@ -1,15 +1,15 @@
 import google.generativeai as genai
-
+from bot.enums import menus
 from aiogram import Router, F
 from aiogram.types import Message
 
 router = Router()
 
 
-@router.message(F.text.contains("дерево"))
+@router.message(F.text.regexp(menus.re_gpt, mode="fullmatch"))
 async def gpt_handler(message: Message) -> None:
-    message.text.split()[1:]
-    text = await gpt_thinks(message)
+    msgp = " ".join(message.text.split()[1:])
+    text = gpt_thinks(msgp)
     await message.answer(text)
 
 
