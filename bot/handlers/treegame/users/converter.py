@@ -12,7 +12,7 @@ router = Router()
 logger = logging.getLogger()
 
 
-@router.message(FullmatchWithArgs("купить яблоко", "купить яблоки", "купить яблок", user=False))
+@router.message(FullmatchWithArgs("купить мандарин", "купить мандарины", user=False))
 async def buy_apple(message: Message, user: User, count: int) -> Any:
     if user.water < WATER_TO_APPLE * count:
         return await message.reply("Недостаточно воды для покупки")
@@ -20,7 +20,7 @@ async def buy_apple(message: Message, user: User, count: int) -> Any:
     user.water -= WATER_TO_APPLE * count
     user.apples += count
 
-    await message.reply(f"Вы купили {count} 🍏  за {WATER_TO_APPLE * count} 💧")
+    await message.reply(f"Вы купили {count} 🍊  за {WATER_TO_APPLE * count} 💧")
     return None
 
 

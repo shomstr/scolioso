@@ -32,8 +32,8 @@ async def give_apple(message: Message, repo: Repositories, us: dict | None, coun
     user.apples += count
     await repo.users.update(user)
 
-    await message.reply(f"Вы выдали {count} 🍎 {user.ping_link}")
-    await send_message(user.id, f"Вам выдали {count} 🍎")
+    await message.reply(f"Вы выдали {count} 🍊 {user.ping_link}")
+    await send_message(user.id, f"Вам выдали {count} 🍊")
 
     return None
 

@@ -146,7 +146,7 @@ async def opad(message: Message, user: User, chat_user: ChatUser, chat: Chat, co
     return None
 
 
-@router.message(FullmatchWithArgs("передать яблоко", "передать яблоки"))
+@router.message(FullmatchWithArgs("передать мандарин", "передать мандарины"))
 async def transfer_apples(message: Message, repo: Repositories, user: User, us: dict, count: int) -> Any:
     if user.apples < count:
         return await message.reply("Недостаточно яблок для передачи")

@@ -40,9 +40,9 @@ HELP_1: |
 HELP_2: |
   🪐 <b>Обмен и передача</b> [2/4]<nl><nl>
   🤖 <i>Эта страница в процессе разработки всегда будет дополняться и усовершенствоваться</i><nl><nl>
-  • 🍎 Купить яблоко - возможность купить яблоко по курсу 10💧 к 1🍏<nl><nl>
+  • 🍎 Купить мандарин - возможность купить мандарин по курсу 10💧 к 1 🍊<nl><nl>
   • 🩵 Купить воды - возможность купить воды по курсу 1🍏 к 10💧<nl><nl>
-  • 🍏 Передать яблоко - возможность передавать ваши яблоки другим пользователям.<nl><nl>
+  • 🍏 Передать мандарины - возможность передавать ваши мандарины другим пользователям.<nl><nl>
 
 HELP_3: |
   🌷 <b>Команды рейтинга</b> [3/4]<nl><nl>
@@ -62,28 +62,29 @@ KB_INFO_CHAT: |
   <b>Ваш помощник по клавиатуре</b>
 
 BAG_TEXTS: |
-  <b>🎅 Информация о садовнике</b> {{ user.openmessage_link }}
+  <b>🦉 Информация о садовнике</b> {{ user.openmessage_link }}
   <nl><nl>
 
-  <b>🎄 Высота дерева</b> <code>{{ tree }}</code> <nl>
+  🌲 Древо | {{ tree }} <nl>
+  💧 Вода | {{ user.water }} л <nl>
+  💸 Лепестки | {{ user.petals }} ед <nl>
 
-  <b>🍃 Лепестки</b> <code>{{ user.petals }}</code> <b>💧 Вода</b> <code>{{ user.water }}</code> <nl>
-  {% if is_self %}<b>🍏 Яблок</b> {{ user.apples }} <nl>
+  {% if is_self %}🍊 Мандарины | {{ user.apples }} шт <nl>
   {% endif %}
   {% if is_self and check_datetime(user.vip_to) %}
   💎 <b>Вип до <u>{{ datetime_to_str(user.vip_to) }}</u></b> <nl>
   {% endif %} <nl>
-  <b>⭐️ Прогулка [{{ walk_time }} часов] </b> <nl>
+  <b>👩🏻‍💻 Прогулка Инфо  [{{ walk_time }} часов] </b> <nl>
 
   {% if check_walk %}
-  <b>⏰ {{ next_walk }}</b>
+  <b>✨ {{ next_walk }}</b>
   {% else %}
   <b>{{ next_walk }} </b>
   {% endif %}
 
   {% if chat_user %} <nl><nl>
   <b>Статистика в текущем чате:</b> <nl>
-  <b>❄️ Листвы</b> <code>{{ chat_user.foliage }}</code> <nl>
+  <b>❄️ Снежинок</b> <code>{{ chat_user.foliage }}</code> <nl>
   <b>🏃🏻‍♀️ Прогулов</b> <code>{{ chat_user.walks }}</code><nl>
   {% endif %}
 
