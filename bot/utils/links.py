@@ -40,7 +40,9 @@ async def get_user_by_username(repo: Repositories, username: str) -> User | None
         return None
 
 
-async def user_from_message(repo: Repositories, message: Message, user: User) -> User | None:
+async def user_from_message(
+    repo: Repositories, message: Message, user: User
+) -> User | None:
     args = message.text.split()
 
     if len(args) >= 2:

@@ -27,7 +27,9 @@ class DailyRotatingFileHandler(RotatingFileHandler):
     ) -> None:
         self.baseFilename = self.get_filename()
         self.today = self._today()
-        RotatingFileHandler.__init__(self, self.baseFilename, mode, maxBytes, backupCount, encoding, delay)
+        RotatingFileHandler.__init__(
+            self, self.baseFilename, mode, maxBytes, backupCount, encoding, delay
+        )
 
     def _today(self) -> datetime:
         self.today = datetime.now()
@@ -79,7 +81,13 @@ class TelegramHandler(logging.Handler):
     WARNING_MESSAGE = ""
     INFO_MESSAGE = "{date}: {message}"
 
-    def __init__(self, bot: Bot, log_chat_id: int, max_message_lenght: int = 4096, timeout: float = 60):
+    def __init__(
+        self,
+        bot: Bot,
+        log_chat_id: int,
+        max_message_lenght: int = 4096,
+        timeout: float = 60,
+    ):
         super().__init__()
 
         self.bot = bot
@@ -143,7 +151,9 @@ class TelegramHandler(logging.Handler):
         self.buffer = []
 
     def add_log(self, record: LogRecord) -> None:
-        text = self.INFO_MESSAGE.format(date=datetime.now().strftime("%H:%M:%S"), message=record.getMessage())
+        text = self.INFO_MESSAGE.format(
+            date=datetime.now().strftime("%H:%M:%S"), message=record.getMessage()
+        )
         self.buffer.append(text)
 
     def split_logs(self) -> list[list[str]]:

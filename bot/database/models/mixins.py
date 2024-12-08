@@ -20,7 +20,10 @@ class ReprMixin:
         values = []
         for key in self._repr_attrs:
             if not hasattr(self, key):
-                raise KeyError("{} has incorrect attribute '{}' in " "_repr_attrs_".format(self.__class__, key))
+                raise KeyError(
+                    "{} has incorrect attribute '{}' in "
+                    "_repr_attrs_".format(self.__class__, key)
+                )
             value = getattr(self, key)
 
             value = str(value)
@@ -31,11 +34,16 @@ class ReprMixin:
         return " ".join(values)
 
     def __repr__(self):
-        return "<{} {}>".format(self.__class__.__name__, self._repr_attrs_str() if self._repr_attrs_str else "")
+        return "<{} {}>".format(
+            self.__class__.__name__,
+            self._repr_attrs_str() if self._repr_attrs_str else "",
+        )
 
 
 class SerializeMixin:
-    def to_dict(self, ignored_columns: list | None = None, relationships: bool = False) -> dict:
+    def to_dict(
+        self, ignored_columns: list | None = None, relationships: bool = False
+    ) -> dict:
         if ignored_columns is None:
             ignored_columns = []
         result: dict = {}
@@ -53,9 +61,15 @@ class SerializeMixin:
                     continue
 
                 if isinstance(relationship_value, list):
-                    result[relationship_name] = [item.to_dict() for item in relationship_value]
+                    result[relationship_name] = [
+                        item.to_dict() for item in relationship_value
+                    ]
                 else:
-                    result[relationship_name] = relationship_value.to_dict() if relationship_value is not None else None
+                    result[relationship_name] = (
+                        relationship_value.to_dict()
+                        if relationship_value is not None
+                        else None
+                    )
         return result
 
 
@@ -72,7 +86,10 @@ class DateTimeMixin:
 
     @declared_attr
     def updated_at(cls) -> Mapped[datetime]:
-        return mapped_column(DateTime(timezone=cls._datetime_timezone), server_onupdate=cls._datetime_func)
+        return mapped_column(
+            DateTime(timezone=cls._datetime_timezone),
+            server_onupdate=cls._datetime_func,
+        )
 
 
 class UserRelationshipMixin:
@@ -83,8 +100,17 @@ class UserRelationshipMixin:
 
     @declared_attr
     def user_id(cls) -> Mapped[int]:
-        return mapped_column(BigInteger, ForeignKey("users.id"), unique=cls._user_id_unique, nullable=cls._user_id_nullable)
+        return mapped_column(
+            BigInteger,
+            ForeignKey("users.id"),
+            unique=cls._user_id_unique,
+            nullable=cls._user_id_nullable,
+        )
 
     @declared_attr
     def user(cls) -> Mapped["User"]:
-        return relationship("User", back_populates=cls._user_back_populates, **cls._user_relationship_kwargs)
+        return relationship(
+            "User",
+            back_populates=cls._user_back_populates,
+            **cls._user_relationship_kwargs,
+        )

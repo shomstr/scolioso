@@ -42,7 +42,11 @@ class BaseRepo(ABC):
         return db_obj[0] if len(db_obj) == 1 else db_obj
 
     async def get(self, db_object_id: int, *options) -> Model | None:
-        q = select(self.model).where(self.model.id == db_object_id).options(*[selectinload(i) for i in options])
+        q = (
+            select(self.model)
+            .where(self.model.id == db_object_id)
+            .options(*[selectinload(i) for i in options])
+        )
 
         return (await self.session.execute(q)).scalar()
 

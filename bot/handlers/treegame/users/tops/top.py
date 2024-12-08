@@ -16,7 +16,12 @@ logger = logging.getLogger()
 
 
 # Топ деревьев
-@router.message(or_f(FullmatchWithArgs(*GlobalTop.GLOBAL_TOP, user=False), Fullmatch(*GlobalTop.GLOBAL_TOP)))
+@router.message(
+    or_f(
+        FullmatchWithArgs(*GlobalTop.GLOBAL_TOP, user=False),
+        Fullmatch(*GlobalTop.GLOBAL_TOP),
+    )
+)
 async def global_top(message: Message, repo: Repositories, count: int = 50):
     if count > 100:
         count = 50
@@ -27,7 +32,9 @@ async def global_top(message: Message, repo: Repositories, count: int = 50):
     await message.reply(text, parse_mode="HTML")
 
 
-@router.message(or_f(FullmatchWithArgs(*ChatTop.CHAT_TOP, user=False), Fullmatch(*ChatTop.CHAT_TOP)))
+@router.message(
+    or_f(FullmatchWithArgs(*ChatTop.CHAT_TOP, user=False), Fullmatch(*ChatTop.CHAT_TOP))
+)
 async def chat_top(message: Message, repo: Repositories, chat: Chat, count: int = 50):
     if message.chat.type == ChatType.PRIVATE:
         return await message.reply("Работает только в чатах")
@@ -35,45 +42,72 @@ async def chat_top(message: Message, repo: Repositories, chat: Chat, count: int 
     if count > 100:
         count = 50
 
-    users = await repo.chats_users.top_users(message.chat.id, User.len_tree, limit=count)
+    users = await repo.chats_users.top_users(
+        message.chat.id, User.len_tree, limit=count
+    )
     text = Texts.gettext("TOP_USERS_CHAT", context={"users": users, "chat": chat})
 
     await message.reply(text)
     return None
 
 
-@router.message(or_f(FullmatchWithArgs(*ChatTop.CHAT_TOP_DONATE, user=False), Fullmatch(*ChatTop.CHAT_TOP_DONATE)))
-async def chat_top_donate(message: Message, repo: Repositories, chat: Chat, count: int = 50):
+@router.message(
+    or_f(
+        FullmatchWithArgs(*ChatTop.CHAT_TOP_DONATE, user=False),
+        Fullmatch(*ChatTop.CHAT_TOP_DONATE),
+    )
+)
+async def chat_top_donate(
+    message: Message, repo: Repositories, chat: Chat, count: int = 50
+):
     if message.chat.type == ChatType.PRIVATE:
         return await message.reply("Работает только в чатах")
 
     if count > 100:
         count = 50
 
-    users = await repo.chats_users.top_users(message.chat.id, ChatUser.foliage_chat_donate, limit=count)
-    text = Texts.gettext("TOP_USERS_CHAT_DONATE", context={"users": users, "chat": chat})
-
-    await message.reply(text)
-    return None
-
-
-@router.message(or_f(FullmatchWithArgs(*ChatTop.CHAT_TOP_SMOKING, user=False), Fullmatch(*ChatTop.CHAT_TOP_SMOKING)))
-async def chat_top_smoking(message: Message, repo: Repositories, chat: Chat, count: int = 50):
-    if message.chat.type == ChatType.PRIVATE:
-        return await message.reply("Работает только в чатах")
-
-    if count > 100:
-        count = 50
-
-    users = await repo.chats_users.top_users(message.chat.id, User.all_smokings, limit=count)
-    text = Texts.gettext("TOP_USERS_CHAT_SMOKINGS", context={"users": users, "chat": chat})
+    users = await repo.chats_users.top_users(
+        message.chat.id, ChatUser.foliage_chat_donate, limit=count
+    )
+    text = Texts.gettext(
+        "TOP_USERS_CHAT_DONATE", context={"users": users, "chat": chat}
+    )
 
     await message.reply(text)
     return None
 
 
 @router.message(
-    or_f(FullmatchWithArgs(*GlobalTop.GLOBAL_TOP_SMOKINGS, user=False), Fullmatch(*GlobalTop.GLOBAL_TOP_SMOKINGS))
+    or_f(
+        FullmatchWithArgs(*ChatTop.CHAT_TOP_SMOKING, user=False),
+        Fullmatch(*ChatTop.CHAT_TOP_SMOKING),
+    )
+)
+async def chat_top_smoking(
+    message: Message, repo: Repositories, chat: Chat, count: int = 50
+):
+    if message.chat.type == ChatType.PRIVATE:
+        return await message.reply("Работает только в чатах")
+
+    if count > 100:
+        count = 50
+
+    users = await repo.chats_users.top_users(
+        message.chat.id, User.all_smokings, limit=count
+    )
+    text = Texts.gettext(
+        "TOP_USERS_CHAT_SMOKINGS", context={"users": users, "chat": chat}
+    )
+
+    await message.reply(text)
+    return None
+
+
+@router.message(
+    or_f(
+        FullmatchWithArgs(*GlobalTop.GLOBAL_TOP_SMOKINGS, user=False),
+        Fullmatch(*GlobalTop.GLOBAL_TOP_SMOKINGS),
+    )
 )
 async def global_top_smoking(message: Message, repo: Repositories, count: int = 50):
     if count > 100:

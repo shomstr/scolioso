@@ -28,9 +28,16 @@ class ChatUser(Base, UserRelationshipMixin):
     __tablename__ = "chats_users"
     _user_relationship_kwargs = {"lazy": "raise"}
 
-    chat_id: Mapped[int] = mapped_column(BigInteger, ForeignKey(Chat.id), nullable=False)
+    chat_id: Mapped[int] = mapped_column(
+        BigInteger, ForeignKey(Chat.id), nullable=False
+    )
     chat: Mapped[Chat] = relationship(
-        "Chat", uselist=False, foreign_keys=chat_id, remote_side="Chat.id", back_populates="members", lazy="raise"
+        "Chat",
+        uselist=False,
+        foreign_keys=chat_id,
+        remote_side="Chat.id",
+        back_populates="members",
+        lazy="raise",
     )
 
     foliage: Mapped[integer]

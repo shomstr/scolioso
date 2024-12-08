@@ -4,6 +4,7 @@ import logging
 from datetime import datetime
 
 from aiogram import Bot
+from aiogram.types import ReplyKeyboardRemove
 
 from bot.config import DEFAULT_TZ, bot, dp
 from bot.settings import settings
@@ -43,7 +44,9 @@ async def on_shutdown(bot: Bot) -> None:
         return
 
     await bot.send_message(
-        settings.log_chat, f"*Exit* _(⏰{datetime.now(DEFAULT_TZ).strftime('%d.%m.%Y %H:%M:%S')})_", parse_mode="Markdown"
+        settings.log_chat,
+        f"*Exit* _(⏰{datetime.now(DEFAULT_TZ).strftime('%d.%m.%Y %H:%M:%S')})_",
+        parse_mode="Markdown",
     )
 
 
@@ -72,7 +75,7 @@ async def _main() -> None:
 
     setup_middlewares(dp)
     setup_routers(dp)
-    # ReplyKeyboardRemove() короче надо это использовать при первом запуске
+    ReplyKeyboardRemove()  # короче надо это использовать при первом запуске
 
     await bot.delete_webhook(drop_pending_updates=settings.bot.drop_pending_updates)
 

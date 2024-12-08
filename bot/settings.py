@@ -38,12 +38,20 @@ class DatabaseSettings(BaseSettings):
     def build_postgres_url(
         self,
     ) -> str:
-        return f"postgresql+{PostgreSQLDrivers.ASYNC_DRIVER}://" f"{self.user}:{self.password}" f"@{self.ip}/{self.name}"
+        return (
+            f"postgresql+{PostgreSQLDrivers.ASYNC_DRIVER}://"
+            f"{self.user}:{self.password}"
+            f"@{self.ip}/{self.name}"
+        )
 
     def build_mysql_url(
         self,
     ) -> str:
-        return f"mysql+{MySQLDrivers.ASYNC_DRIVER}://" f"{self.user}:{self.password}" f"@{self.ip}/{self.name}"
+        return (
+            f"mysql+{MySQLDrivers.ASYNC_DRIVER}://"
+            f"{self.user}:{self.password}"
+            f"@{self.ip}/{self.name}"
+        )
 
 
 class RedisSettings(BaseSettings):
@@ -58,6 +66,17 @@ class RedisSettings(BaseSettings):
         return Redis(host=self.ip, port=self.port, password=self.password, db=db)
 
 
+class GeminiSettings(BaseSettings):
+    key: str
+
+    model_config = SettingsConfigDict(env_prefix="GEMINI_API_")
+
+
+class SupportChatSettings(BaseSettings):
+    id: int
+    model_config = SettingsConfigDict(env_prefix="SUPPORT_CHAT_")
+
+
 class Settings(BaseSettings):
     log_chat: int | None = None
     admins: list[int]
@@ -66,6 +85,8 @@ class Settings(BaseSettings):
     bot: BotSettings = BotSettings()
     db: DatabaseSettings = DatabaseSettings()
     redis: RedisSettings = RedisSettings()
+    gemini: GeminiSettings = GeminiSettings()
+    support: SupportChatSettings = SupportChatSettings()
 
 
 settings = Settings()

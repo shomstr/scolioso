@@ -14,10 +14,16 @@ from bot.settings import settings
 
 logger = logging.getLogger("Database")
 
-URL = settings.db.build_postgres_url() if settings.db.used == Databases.PostgreSQl else settings.db.build_mysql_url()
+URL = (
+    settings.db.build_postgres_url()
+    if settings.db.used == Databases.PostgreSQl
+    else settings.db.build_mysql_url()
+)
 
 
-engine = create_async_engine(URL, future=True, poolclass=NullPool, echo=settings.debug_mode)
+engine = create_async_engine(
+    URL, future=True, poolclass=NullPool, echo=settings.debug_mode
+)
 sessionmaker = async_sessionmaker(bind=engine, expire_on_commit=False, autoflush=False)
 
 

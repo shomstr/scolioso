@@ -11,7 +11,9 @@ from bot.database.models import User
 
 
 async def edit_message(
-    message: Message, text: str, reply_markup: ReplyKeyboardMarkup | InlineKeyboardMarkup | None
+    message: Message,
+    text: str,
+    reply_markup: ReplyKeyboardMarkup | InlineKeyboardMarkup | None,
 ) -> Message:
     with contextlib.suppress(TelegramBadRequest):
         if message.photo:
@@ -19,7 +21,9 @@ async def edit_message(
         return await message.edit_text(text=text, reply_markup=reply_markup)
 
 
-async def get_user_by_username(repo: Repositories, username: str, *user_options) -> User | None:
+async def get_user_by_username(
+    repo: Repositories, username: str, *user_options
+) -> User | None:
     username = username.replace("@", "").lower()
 
     users = await repo.users.get_users_by_username(username, *user_options)
@@ -39,7 +43,9 @@ async def get_user_by_username(repo: Repositories, username: str, *user_options)
         return None
 
 
-async def get_user_from_message(message: Message, command: str | None = None) -> dict | None:
+async def get_user_from_message(
+    message: Message, command: str | None = None
+) -> dict | None:
     text = message.text.lower()
     if command:
         text = text.replace(command, "")
@@ -107,6 +113,8 @@ async def send_messages(
 
     else:
         if from_message:
-            await from_message.answer(f"Всего было отправлено {all_users} из {len(users)}")
+            await from_message.answer(
+                f"Всего было отправлено {all_users} из {len(users)}"
+            )
 
         logger.info(f"Всего было отправлено {all_users} из {len(users)}")

@@ -92,7 +92,9 @@ class MockedBot(Bot):
 
     def __init__(self, **kwargs):
         """Mocked session init."""
-        super().__init__(kwargs.pop("token", "42:TEST"), session=MockedSession(), **kwargs)
+        super().__init__(
+            kwargs.pop("token", "42:TEST"), session=MockedSession(), **kwargs
+        )
         self._me = User(
             id=self.id,
             is_bot=True,

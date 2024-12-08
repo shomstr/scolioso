@@ -33,4 +33,9 @@ async def test_database_pool() -> None:
         else:
             version = "unknown"
 
-        logger.debug("Successful connected to %s(%s). Ping: %s ms", settings.db.used, version, ping)
+        logger.debug(
+            "Successful connected to %s(%s). Ping: %s ms",
+            settings.db.used,
+            version,
+            ping,
+        )

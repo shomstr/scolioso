@@ -17,7 +17,9 @@ IS_CHANNEL = F.chat.type == ChatType.CHANNEL
 
 
 @router.my_chat_member(
-    ChatMemberUpdatedFilter(member_status_changed=JOIN_TRANSITION), IS_CHANNEL, flags={"chat": False, "user": False}
+    ChatMemberUpdatedFilter(member_status_changed=JOIN_TRANSITION),
+    IS_CHANNEL,
+    flags={"chat": False, "user": False},
 )
 async def bot_added_in_channel(event: ChatMemberUpdated) -> None:
     channel = event.chat
@@ -26,7 +28,9 @@ async def bot_added_in_channel(event: ChatMemberUpdated) -> None:
 
 
 @router.my_chat_member(
-    ChatMemberUpdatedFilter(member_status_changed=LEAVE_TRANSITION), IS_CHANNEL, flags={"chat": False, "user": False}
+    ChatMemberUpdatedFilter(member_status_changed=LEAVE_TRANSITION),
+    IS_CHANNEL,
+    flags={"chat": False, "user": False},
 )
 async def bot_kicked_from_chat(event: ChatMemberUpdated) -> None:
     channel = event.chat

@@ -7,13 +7,25 @@ from aiogram import Router, F
 from aiogram.enums import ChatType
 from aiogram import types
 
-from bot.config import MIN_LENGHT_TREE, MAX_LENGHT_TREE, MIN_PETALS_WALK, MIN_WATER_WALK, MAX_PETALS_WALK, MAX_WATER_WALK
+from bot.config import (
+    MIN_LENGHT_TREE,
+    MAX_LENGHT_TREE,
+    MIN_PETALS_WALK,
+    MIN_WATER_WALK,
+    MAX_PETALS_WALK,
+    MAX_WATER_WALK,
+)
 from bot.database import Repositories
 from bot.database.models import User, ChatUser
 from bot.messages import WALK_TEXTS, WATERING_TEXTS
 from bot.utils.aiogram import get_user_by_username
 from bot.utils.texts import Texts
-from bot.utils.tree import formatted_heght_tree, formatted_next_walk, walk_time, check_walk
+from bot.utils.tree import (
+    formatted_heght_tree,
+    formatted_next_walk,
+    walk_time,
+    check_walk,
+)
 
 router = Router(name=__name__)
 logger = logging.getLogger()
@@ -21,7 +33,11 @@ logger = logging.getLogger()
 
 @router.callback_query(F.data == "water")
 async def watering_callback(
-    call: types.CallbackQuery, repo: Repositories, user: User, chat_user: ChatUser, count: int | None = None
+    call: types.CallbackQuery,
+    repo: Repositories,
+    user: User,
+    chat_user: ChatUser,
+    count: int | None = None,
 ) -> Any:
     id = call.from_user.id
 
@@ -54,7 +70,9 @@ async def watering_callback(
 
 
 @router.callback_query(F.data == "walking")
-async def walk_callback(call: types.CallbackQuery, repo: Repositories, user: User, chat_user: ChatUser) -> Any:
+async def walk_callback(
+    call: types.CallbackQuery, repo: Repositories, user: User, chat_user: ChatUser
+) -> Any:
     id = call.from_user.id
 
     user = await repo.users.get(id)
@@ -69,7 +87,10 @@ async def walk_callback(call: types.CallbackQuery, repo: Repositories, user: Use
             call.message.chat.id,
         )
 
-    if user.last_walk and user.last_walk + timedelta(hours=walk_time(user)) > datetime.now():
+    if (
+        user.last_walk
+        and user.last_walk + timedelta(hours=walk_time(user)) > datetime.now()
+    ):
         return await call.answer(f"Еще рано, {formatted_next_walk(user)}")
 
     user.last_walk = datetime.now()
@@ -89,7 +110,9 @@ async def walk_callback(call: types.CallbackQuery, repo: Repositories, user: Use
 
 
 @router.callback_query(F.data == "gardener")
-async def gardener(call: types.CallbackQuery, repo: Repositories, user: User, chat_user: ChatUser) -> Any:
+async def gardener(
+    call: types.CallbackQuery, repo: Repositories, user: User, chat_user: ChatUser
+) -> Any:
     id = call.from_user.id
 
     user = await repo.users.get(id)

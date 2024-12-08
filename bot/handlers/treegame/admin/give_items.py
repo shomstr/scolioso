@@ -14,7 +14,9 @@ logger = logging.getLogger(__name__)
 
 
 @router.message(FullmatchWithArgs(*MessageCommands.GIVE_APPLE.value))
-async def give_apple(message: Message, repo: Repositories, us: dict | None, count: int) -> Any:
+async def give_apple(
+    message: Message, repo: Repositories, us: dict | None, count: int
+) -> Any:
     if not us:
         return await message.answer("Укажите юзера")
     if count > 10_000:
@@ -39,7 +41,9 @@ async def give_apple(message: Message, repo: Repositories, us: dict | None, coun
 
 
 @router.message(FullmatchWithArgs(*MessageCommands.GIVE_WATER.value))
-async def give_water(message: Message, repo: Repositories, us: dict | None, count: int) -> Any:
+async def give_water(
+    message: Message, repo: Repositories, us: dict | None, count: int
+) -> Any:
     if not us:
         return await message.answer("Укажите юзера")
     if count > 10_000:

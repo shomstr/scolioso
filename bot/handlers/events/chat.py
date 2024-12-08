@@ -24,7 +24,9 @@ IS_CHANNEL = F.chat.type == ChatType.CHANNEL
     IS_GROUP,
     flags={"chat": True, "chat_options": [], "user": False},
 )
-async def bot_added_in_chat(event: ChatMemberUpdated, repo: Repositories, chat: Chat) -> None:
+async def bot_added_in_chat(
+    event: ChatMemberUpdated, repo: Repositories, chat: Chat
+) -> None:
     chat_ = event.chat
 
     await event.answer("Привет, спасибо что добавили меня в чат!")
@@ -39,7 +41,9 @@ async def bot_added_in_chat(event: ChatMemberUpdated, repo: Repositories, chat: 
     IS_GROUP,
     flags={"chat": True, "chat_options": [], "user": False},
 )
-async def bot_kicked_from_chat(event: ChatMemberUpdated, repo: Repositories, chat: Chat) -> None:
+async def bot_kicked_from_chat(
+    event: ChatMemberUpdated, repo: Repositories, chat: Chat
+) -> None:
     chat_ = event.chat
 
     if chat:

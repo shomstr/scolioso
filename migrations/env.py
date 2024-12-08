@@ -25,10 +25,7 @@ if settings.db.used == Databases.PostgreSQl:
 else:
     url = settings.db.build_mysql_url()
 
-config.set_main_option(
-    "sqlalchemy.url",
-    url
-)
+config.set_main_option("sqlalchemy.url", url)
 
 # add your model's MetaData object here
 # for 'autogenerate' support

@@ -56,7 +56,9 @@ class GetUser(BaseMiddleware):
 
         data["is_new_user"] = False
         if not user:
-            user: User = await repo.users.create(id=us.id, name=us.full_name, username=us.username)
+            user: User = await repo.users.create(
+                id=us.id, name=us.full_name, username=us.username
+            )
             logger.info(f"Новый пользователь: {user.openmessage_link}")
             data["is_new_user"] = True
         data["user"] = user
@@ -116,7 +118,9 @@ class GetChatUser(BaseMiddleware):
 
         chat_user_options = get_flag(data, "chat_user_options", default=[])
 
-        chat_user = await repo.chats_users.get_chat_user(user.id, chat.id, *chat_user_options)
+        chat_user = await repo.chats_users.get_chat_user(
+            user.id, chat.id, *chat_user_options
+        )
         if not chat_user:
             chat_user = await repo.chats_users.create_from_aiogram_model(user, chat)
 

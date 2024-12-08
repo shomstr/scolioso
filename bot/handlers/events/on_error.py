@@ -91,4 +91,7 @@ async def error_handler(exception: ErrorEvent) -> None:
         logger.warning("Unknow update, %s", exception.update)
         return
 
-    logger.error(f"User={user_full_name} id={user_id} chat_id={chat_id if chat_id else 'No chat'}", exc_info=True)
+    logger.error(
+        f"User={user_full_name} id={user_id} chat_id={chat_id if chat_id else 'No chat'}",
+        exc_info=True,
+    )

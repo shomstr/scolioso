@@ -50,12 +50,22 @@ TEST_MESSAGE = Message(message_id=123, date=datetime.now(), chat=TEST_CHAT)
 def get_message(text: str, chat=TEST_CHAT, from_user=TEST_USER, **kwargs):
     """Get message update for tests."""
     return Message(
-        message_id=123, date=datetime.now(), chat=chat, from_user=from_user, sender_chat=TEST_CHAT, text=text, **kwargs
+        message_id=123,
+        date=datetime.now(),
+        chat=chat,
+        from_user=from_user,
+        sender_chat=TEST_CHAT,
+        text=text,
+        **kwargs,
     )
 
 
 def get_chat(
-    chat_id: int = None, chat_type: str = "private", title: str = "TEST_TITLE", username: str = TEST_CHAT.username, **kwargs
+    chat_id: int = None,
+    chat_type: str = "private",
+    title: str = "TEST_TITLE",
+    username: str = TEST_CHAT.username,
+    **kwargs
 ) -> Chat:
     """Get chat object for tests."""
     return Chat(
@@ -69,13 +79,22 @@ def get_chat(
     )
 
 
-def get_callback_query(data: str | CallbackData, from_user=TEST_USER, message=None, **kwargs):
+def get_callback_query(
+    data: str | CallbackData, from_user=TEST_USER, message=None, **kwargs
+):
     """Get callback query update for tests."""
     return CallbackQuery(
-        id="test", from_user=from_user, chat_instance="test", message=message or TEST_MESSAGE, data=data, **kwargs
+        id="test",
+        from_user=from_user,
+        chat_instance="test",
+        message=message or TEST_MESSAGE,
+        data=data,
+        **kwargs,
     )
 
 
 def get_update(message: Message = None, callback_query: CallbackQuery = None, **kwargs):
     """Get mocked update for tests."""
-    return Update(update_id=187, message=message, callback_query=callback_query or None, **kwargs)
+    return Update(
+        update_id=187, message=message, callback_query=callback_query or None, **kwargs
+    )

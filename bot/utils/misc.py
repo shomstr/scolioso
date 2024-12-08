@@ -61,7 +61,9 @@ async def bot_info_dict() -> dict[str, Any]:
         inf["cpu_load"] = psutil.cpu_percent()
 
     with contextlib.suppress(Exception):
-        inf["ram"] = bytes_to_megabytes(psutil.virtual_memory().total - psutil.virtual_memory().available)
+        inf["ram"] = bytes_to_megabytes(
+            psutil.virtual_memory().total - psutil.virtual_memory().available
+        )
 
     with contextlib.suppress(Exception):
         inf["ram_load_mb"] = bytes_to_megabytes(psutil.virtual_memory().total)
@@ -79,7 +81,9 @@ async def bot_info_dict() -> dict[str, Any]:
     )
 
     with contextlib.suppress(Exception):
-        with subprocess.Popen("cat /etc/*release", stdout=subprocess.PIPE, shell=True) as proc:
+        with subprocess.Popen(
+            "cat /etc/*release", stdout=subprocess.PIPE, shell=True
+        ) as proc:
             if proc.stdout:
                 system = proc.stdout.read().decode("utf-8")
                 b = system.find('DISTRIB_DESCRIPTION="') + 21
@@ -87,7 +91,9 @@ async def bot_info_dict() -> dict[str, Any]:
                 inf["os"] = html.escape(system)
 
     with contextlib.suppress(Exception):
-        inf["python"] = f"{sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}"
+        inf["python"] = (
+            f"{sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}"
+        )
 
     # process
     process = psutil.Process()

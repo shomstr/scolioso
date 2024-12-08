@@ -18,7 +18,10 @@ class Repositories:
     @staticmethod
     def get_repo(session: AsyncSession) -> Repositories:
         return Repositories(
-            session=session, users=UsersRepo(session), chats=ChatsRepo(session), chats_users=ChatsUsersRepo(session)
+            session=session,
+            users=UsersRepo(session),
+            chats=ChatsRepo(session),
+            chats_users=ChatsUsersRepo(session),
         )
 
 

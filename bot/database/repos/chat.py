@@ -14,7 +14,11 @@ class ChatsRepo(BaseRepo):
     model = Chat
 
     async def get_by_chat_id(self, chat_id: int, *chat_options) -> User | None:
-        q = select(Chat).where(Chat.id == chat_id).options(*[selectinload(i) for i in chat_options])
+        q = (
+            select(Chat)
+            .where(Chat.id == chat_id)
+            .options(*[selectinload(i) for i in chat_options])
+        )
 
         return (await self.session.execute(q)).scalar()
 
@@ -22,7 +26,9 @@ class ChatsRepo(BaseRepo):
 class ChatsUsersRepo(BaseRepo):
     model = ChatUser
 
-    async def get_chat_user(self, user_id: int, chat_id: int, *chat_options) -> ChatUser | None:
+    async def get_chat_user(
+        self, user_id: int, chat_id: int, *chat_options
+    ) -> ChatUser | None:
         q = (
             select(ChatUser)
             .where(ChatUser.user_id == user_id, ChatUser.chat_id == chat_id)
@@ -31,7 +37,9 @@ class ChatsUsersRepo(BaseRepo):
 
         return (await self.session.execute(q)).scalar()
 
-    async def create_from_aiogram_model(self, user: AiogramUser, chat: AiogramChat) -> ChatUser:
+    async def create_from_aiogram_model(
+        self, user: AiogramUser, chat: AiogramChat
+    ) -> ChatUser:
         us: User = ChatUser(user_id=user.id, chat_id=chat.id)
         await self.create_from_model(us)
 
@@ -50,11 +58,15 @@ class ChatsUsersRepo(BaseRepo):
         await self.session.execute(q)
         await self.session.commit()
 
-    async def top_users(self, chat_id: int, order_by: InstrumentedAttribute, limit=50) -> Sequence[ChatUser]:
+    async def top_users(
+        self, chat_id: int, order_by: InstrumentedAttribute, limit=50
+    ) -> Sequence[ChatUser]:
         q = (
             select(ChatUser)
             .join(User)
-            .where(ChatUser.user_id == User.id, ChatUser.chat_id == chat_id, order_by != 0)
+            .where(
+                ChatUser.user_id == User.id, ChatUser.chat_id == chat_id, order_by != 0
+            )
             .order_by(desc(order_by))
             .limit(limit)
             .options(joinedload(ChatUser.user))

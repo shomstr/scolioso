@@ -30,7 +30,9 @@ class JinjaTexts:
         """
 
         if template_name not in self.yaml:
-            raise NameError(f'Template "{template_name}" not find in "{self.file_name}"')
+            raise NameError(
+                f'Template "{template_name}" not find in "{self.file_name}"'
+            )
 
         template_text = self.yaml[template_name]
         template = Template(template_text)

@@ -6,7 +6,9 @@ start_keyboard = InlineKeyboardBuilder(
     markup=[
         [
             InlineKeyboardButton(text="Bupyc", url="https://t.me/Not_Bupyc"),
-            InlineKeyboardButton(text="Template", url="https://github.com/NotBupyc/aiogram-bot-template"),
+            InlineKeyboardButton(
+                text="Template", url="https://github.com/NotBupyc/aiogram-bot-template"
+            ),
         ]
     ]
 ).as_markup()
@@ -37,7 +39,17 @@ def help_keyboard():
     kb = InlineKeyboardBuilder()
 
     (kb.button(text="☎️ Помощь", callback_data="help"),)
-    (kb.button(text="🆘️ Поддержка", callback_data="start_game"),)
+    kb.button(text="🆘️ Поддержка", callback_data="help_support")
+
+    kb.adjust(1)
+    return kb.as_markup(resize_keyboard=True)
+
+
+def help_skip_keyboard():
+    kb = InlineKeyboardBuilder()
+
+    (kb.button(text="Отмена", callback_data="support_cancel"),)
+    (kb.button(text="Пропустить", callback_data="support_skip"),)
 
     kb.adjust(1)
     return kb.as_markup(resize_keyboard=True)
