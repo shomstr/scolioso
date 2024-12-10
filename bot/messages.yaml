@@ -85,23 +85,23 @@ BAG_TEXTS: |
   {% if chat_user %} <nl><nl>
   <b>Статистика в текущем чате:</b> <nl>
   <b>❄️ Снежинок</b> <code>{{ chat_user.foliage }}</code> <nl>
-  <b>🏃🏻‍♀️ Прогулов</b> <code>{{ chat_user.walks }}</code><nl>
+  <b>🏃🏻‍♀️ Прогулки</b> <code>{{ chat_user.walks }}</code><nl>
   {% endif %}
 
 TOP_USERS_GLOBAL: |
-  <b>🎄 Статистика деревьев мира:</b> <nl>
+  <b>🎄 Статистика ёлочек мира:</b> <nl>
   {% for i, user in enumerate(users, start=1) %}
   {{ formatted_top_number(i) }} {{ user.openmessage_link }} - {{ formatted_heght_tree(user.len_tree) }} <nl>
   {% endfor %}
 
 TOP_USERS_CHAT: |
-  <b>🎄 Статистика деревьев леса <u>{{ chat.title | e }}</u></b> <nl>
+  <b>🎄 Статистика ёлочек леса <u>{{ chat.title | e }}</u></b> <nl>
   {% for i, user in enumerate(users, start=1) %}
   {{ formatted_top_number(i) }} {{ user.user.openmessage_link }} - {{ formatted_heght_tree(user.user.len_tree) }} <nl>
   {% endfor %}
 
 TOP_USERS_CHAT_DONATE: |
-  <b>🎄 Статистика деревьев леса <u>{{ chat.title | e }}</u></b> по листве <nl>
+  <b>🎄 Статистика ёлочек леса <u>{{ chat.title | e }}</u></b> по листве <nl>
   {% for i, user in enumerate(users, start=1) %}
   {{ formatted_top_number(i) }} {{ user.user.openmessage_link }} - {{ user.foliage_chat_donate }} <nl>
   {% endfor %}
@@ -109,14 +109,14 @@ TOP_USERS_CHAT_DONATE: |
   Всего пожертвовано листвы: {{ chat.foliage }}
 
 TOP_USERS_CHAT_SMOKINGS: |
-  <b>🎄 Статистика деревьев по хапу <u>{{ chat.title | e }}</u></b> по листве <nl>
+  <b>🎄 Статистика ёлочек по хапу <u>{{ chat.title | e }}</u></b> по листве <nl>
   {% for i, user in enumerate(users, start=1) %}
   {{ formatted_top_number(i) }} {{ user.user.openmessage_link }} - {{ user.user.all_smokings }} <nl>
   {% endfor %}
   <nl>
 
 TOP_USERS_GLOBAL_SMOKINGS: |
-  <b>🎄 Статистика деревьев мира по хапу :</b> <nl>
+  <b>🎄 Статистика ёлочек мира по хапу :</b> <nl>
   {% for i, user in enumerate(users, start=1) %}
   {{ formatted_top_number(i) }} {{ user.openmessage_link }} - {{ user.all_smokings }} <nl>
   {% endfor %}
