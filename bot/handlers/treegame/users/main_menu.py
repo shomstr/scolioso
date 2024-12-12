@@ -135,7 +135,7 @@ async def opad(message: Message, user: User, chat_user: ChatUser, chat: Chat, co
         return await message.reply("Работает только в чатах")
 
     if chat_user.foliage < count:
-        return await message.reply("Недостаточно листвы")
+        return await message.reply("Недостаточно снежинок")
 
     chat_user.foliage -= count
     chat_user.foliage_chat_donate += count
@@ -149,7 +149,7 @@ async def opad(message: Message, user: User, chat_user: ChatUser, chat: Chat, co
 @router.message(FullmatchWithArgs("передать мандарин", "передать мандарины"))
 async def transfer_apples(message: Message, repo: Repositories, user: User, us: dict, count: int) -> Any:
     if user.apples < count:
-        return await message.reply("Недостаточно яблок для передачи")
+        return await message.reply("Недостаточно мандаринок для передачи")
 
     if us.get("user_id"):
         other_user = await repo.users.get(us.get("user_id"))
@@ -164,7 +164,7 @@ async def transfer_apples(message: Message, repo: Repositories, user: User, us: 
     other_user.apples += count
     await repo.users.update(other_user)
 
-    await message.reply(f"Вы передали {count} 🍏 {other_user.ping_link}")
+    await message.reply(f"Вы передали {count} 🍊 {other_user.ping_link}")
 
     await send_message(other_user.id, f"{user.openmessage_link} передал вам {count} 🍏 ")
     return None
