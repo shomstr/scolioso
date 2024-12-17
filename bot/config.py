@@ -1,12 +1,13 @@
 import pytz
+from redis.asyncio import Redis
+from aiogram.fsm.storage.redis import RedisStorage
+
 from aiogram import Bot, Dispatcher
 from aiogram.client.default import DefaultBotProperties
 from aiogram.fsm.storage.base import BaseStorage
 from aiogram.fsm.storage.memory import MemoryStorage
-from aiogram.fsm.storage.redis import RedisStorage
 from aiogram.fsm.strategy import FSMStrategy
 
-from bot.database.redis.redis_initialize import redis_initialize
 
 from .settings import settings
 
@@ -20,7 +21,7 @@ bot = Bot(
 
 storage: BaseStorage
 if settings.redis.use:
-    storage = Redis(host=settings.redis.ip, port=6379, db=0, decode_responses=True)
+    storage = RedisStorage(settings.redis.get_redis())
 else:
     storage = MemoryStorage()
 

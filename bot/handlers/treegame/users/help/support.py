@@ -32,7 +32,6 @@ async def process_question(msg: Message, state: FSMContext):
 
 @router.message(SupportState.screenshot, F.photo)
 async def process_screenshot(msg: Message, state: FSMContext, bot: Bot, redis: Redis):
-
     photo_data = msg.photo[-1].file_id
     data = await state.get_data()
 
@@ -42,8 +41,8 @@ async def process_screenshot(msg: Message, state: FSMContext, bot: Bot, redis: R
     await bot.send_photo(
         chat_id=settings.support.id,
         photo=f"{photo_data}",
-        caption=f"новое обращение от игрока:\n{question}"
+        caption=f"новое обращение от игрока:\n{question}",
     )
-    await redis.hset(name='support', key=msg.from_user.id, value=msg.message_id)
+    await redis.hset(name="support", key=msg.from_user.id, value=msg.message_id)
 
     await msg.answer("Обращение отправлено!\nожидайте ответа от поддержки.")
