@@ -2,6 +2,7 @@ import logging
 
 from aiogram import Router, types, F, Bot
 from aiogram.types import Message
+from redis.asyncio import Redis
 from aiogram.fsm.context import FSMContext
 from bot.fsm.support import SupportState
 from bot.settings import settings
@@ -30,13 +31,19 @@ async def process_question(msg: Message, state: FSMContext):
 
 
 @router.message(SupportState.screenshot, F.photo)
-async def process_screenshot(msg: Message, state: FSMContext, bot: Bot):
+async def process_screenshot(msg: Message, state: FSMContext, bot: Bot, redis: Redis):
+
     photo_data = msg.photo[-1].file_id
     data = await state.get_data()
+
     question = data.get("question")
     await state.update_data(screenshot=photo_data)
+
     await bot.send_photo(
         chat_id=settings.support.id,
         photo=f"{photo_data}",
-        caption=f"г=новое обращение:\n{question}",
+        caption=f"новое обращение от игрока:\n{question}"
     )
+    await redis.hset(name='support', key=msg.from_user.id, value=msg.message_id)
+
+    await msg.answer("Обращение отправлено!\nожидайте ответа от поддержки.")
