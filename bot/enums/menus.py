@@ -35,3 +35,4 @@ re_keyboard = re.compile(
 )
 re_help = re.compile(r"(помощь|хелп)", re.IGNORECASE)
 re_gpt = re.compile(r"дерево\s*(.*)", re.IGNORECASE)
+re_gpt_2 = re.compile(r"древо\s*(.*)", re.IGNORECASE)

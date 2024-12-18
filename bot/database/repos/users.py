@@ -38,3 +38,7 @@ class UsersRepo(BaseRepo):
         q = select(User).where(order_by != 0).order_by(desc(order_by)).limit(limit)
 
         return (await self.session.execute(q)).scalars().all()
+
+    async def get_all_users(self) -> Sequence[User]:
+        q = select(User) 
+        return (await self.session.execute(q)).scalars().all() 

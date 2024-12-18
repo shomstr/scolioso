@@ -8,3 +8,4 @@ class MessageCommands(Enum):
         "выдать воды",
         "выдать воду",
     ]
+    ADMIN_PANEL = ["юзеры", "бот инфо"]

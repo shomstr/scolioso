@@ -22,6 +22,10 @@ class ChatsRepo(BaseRepo):
 
         return (await self.session.execute(q)).scalar()
 
+    async def get_all_chats(self) -> Sequence[Chat]:
+        q = select(Chat) 
+        return (await self.session.execute(q)).scalars().all() 
+
 
 class ChatsUsersRepo(BaseRepo):
     model = ChatUser
