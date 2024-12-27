@@ -89,12 +89,15 @@ class GetChat(BaseMiddleware):
         chat = await repo.chats.get_by_chat_id(_chat.id, *chat_options)
 
         if not chat:
-            chat = await repo.chats.create(id=_chat.id, title=_chat.title)
+            chat = await repo.chats.create_from_aiogram_model(_chat)
 
         data["chat"] = chat
-        chat.name = _chat.title
 
         await handler(event, data)
+
+        chat.name = _chat.title
+        chat.in_chat = True
+
         return None
 
 

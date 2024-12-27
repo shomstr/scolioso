@@ -13,10 +13,13 @@ from aiogram.types import User as AiogramUser, Chat as AiogramChat
 class ChatsRepo(BaseRepo):
     model = Chat
 
-    async def get_by_chat_id(self, chat_id: int, *chat_options) -> User | None:
+    async def get_by_chat_id(self, chat_id: int, *chat_options) -> Chat | None:
         q = select(Chat).where(Chat.id == chat_id).options(*[selectinload(i) for i in chat_options])
 
         return (await self.session.execute(q)).scalar()
+
+    async def create_from_aiogram_model(self, chat: AiogramChat) -> Chat:
+        return await self.create(id=chat.id, title=chat.title)
 
 
 class ChatsUsersRepo(BaseRepo):

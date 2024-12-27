@@ -43,7 +43,7 @@ async def bot_kicked_from_chat(event: ChatMemberUpdated, repo: Repositories, cha
     chat_ = event.chat
 
     if chat:
-        await repo.chats.delete(chat)
+        chat.in_chat = False
 
     logger.info(f"Бот кикнут с чата {chat_.title}({chat_.id})")
 
