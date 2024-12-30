@@ -17,7 +17,7 @@ class MainMenu(StrEnum):
 class MainMenuVars(Enum):
     WALK = [MainMenu.WALK.lower(), "прогулка", "гулять", "погулять"]
     WATERING = [MainMenu.WATERING.lower(), "полив", "полить"]
-    BAG = [MainMenu.BAG.lower(), "садовник", f"{Emoji.TREE} Дерево".lower(), "дерево"]
+    BAG = [MainMenu.BAG.lower(), "садовник", f"{Emoji.TREE} Дерево".lower(), "дерево", "елка".lower(), "ёлка".lower()]
     SMOKING = ["хапнуть", "скурить", "хап"]
     KEYBOARD = [
         "клава",
@@ -36,3 +36,10 @@ re_keyboard = re.compile(
 re_help = re.compile(r"(помощь|хелп)", re.IGNORECASE)
 re_gpt = re.compile(r"дерево\s*(.*)", re.IGNORECASE)
 re_gpt_2 = re.compile(r"древо\s*(.*)", re.IGNORECASE)
+
+re_pref = r'([!./]|)'
+re_add_note = re.compile(r'^\+ветка\s+([\s\S]+?)\n([\s\S]+)', re.IGNORECASE)
+re_del_note = re.compile(r'^\-ветка\s+(.+?)', re.IGNORECASE)
+
+re_show_note = re.compile(re_pref + r'^\ветка\s+(.+?)', re.IGNORECASE)
+re_show_all_notes = re.compile(re_pref + r'^ветки', re.IGNORECASE)

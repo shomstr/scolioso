@@ -4,7 +4,7 @@ from bot.settings import settings
 
 async def gpt_thinks(message):
     genai.configure(api_key=settings.gemini.key)
-    model = genai.GenerativeModel("gemini-1.5-flash")
+    model = genai.GenerativeModel("gemini-2.0-flash-exp")
 
     prompt = messages.gpt_promt.format(message=message)
 
@@ -13,7 +13,7 @@ async def gpt_thinks(message):
 
 async def gpt_thinks_2(message):
     genai.configure(api_key=settings.gemini.key)
-    model = genai.GenerativeModel("gemini-1.5-flash")
+    model = genai.GenerativeModel("gemini-2.0-flash-exp")
 
     prompt = messages.gpt_promt_2.format(message=message)
 

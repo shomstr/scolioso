@@ -1,4 +1,4 @@
-from sqlalchemy import BigInteger, ForeignKey
+from sqlalchemy import BigInteger, ForeignKey, sql
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from .base_models import Base
@@ -22,6 +22,8 @@ class Chat(Base):
     )
 
     foliage: Mapped[integer]
+
+    in_chat: Mapped[bool] = mapped_column(server_default=sql.true())
 
 
 class ChatUser(Base, UserRelationshipMixin):
