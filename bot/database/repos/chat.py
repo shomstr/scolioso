@@ -13,7 +13,6 @@ from aiogram.types import User as AiogramUser, Chat as AiogramChat
 class ChatsRepo(BaseRepo):
     model = Chat
 
-<<<<<<< HEAD
     async def get_by_chat_id(self, chat_id: int, *chat_options) -> User | None:
         q = (
             select(Chat)
@@ -26,7 +25,7 @@ class ChatsRepo(BaseRepo):
     async def get_all_chats(self) -> Sequence[Chat]:
         q = select(Chat) 
         return (await self.session.execute(q)).scalars().all() 
-=======
+
     async def get_by_chat_id(self, chat_id: int, *chat_options) -> Chat | None:
         q = select(Chat).where(Chat.id == chat_id).options(*[selectinload(i) for i in chat_options])
 
@@ -34,7 +33,6 @@ class ChatsRepo(BaseRepo):
 
     async def create_from_aiogram_model(self, chat: AiogramChat) -> Chat:
         return await self.create(id=chat.id, title=chat.title)
->>>>>>> 1998ddfefdad5215a68d3eb45122618040011091
 
 
 class ChatsUsersRepo(BaseRepo):
