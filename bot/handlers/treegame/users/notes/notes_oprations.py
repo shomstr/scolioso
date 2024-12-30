@@ -42,6 +42,7 @@ async def delete_note(message: Message, repo: Repositories):
         
         if note:
             await repo.notes.del_note_id(chat_id, note_id)
+            await repo.notes.upd_note_list(chat_id, note.note_id)
             await message.reply(DEL_NOTE.format(note_id=note_id))  
         else:
             await message.answer(VIEW_NOTE_NOT_FOUND) 
@@ -51,6 +52,7 @@ async def delete_note(message: Message, repo: Repositories):
 
         if note:
             await repo.notes.del_note_title(chat_id, note_title)
+            await repo.notes.upd_note_list(chat_id, note.note_id)
             await message.reply(DEL_NOTE.format(note_title=note_title)) 
         else:
             await message.answer(VIEW_NOTE_NOT_FOUND)  
