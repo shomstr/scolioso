@@ -5,6 +5,11 @@ from aiogram.filters import CommandStart, Command
 from aiogram.enums.chat_type import ChatType
 from aiogram.types import Message
 
+from bot.utils.tree import (
+    formatted_heght_tree,
+    formatted_next_walk,
+    walk_time,
+)
 from bot.database.models import User, ChatUser
 from bot.enums import menus
 from bot.database.engine import Repositories
@@ -36,8 +41,40 @@ async def kb(
     us: dict | None = None,
 ):
     if msg.chat.type != "private":
+        if not us:
+            is_self = True
+
+        else:
+            if us.get("user_id"):
+                user = await repo.users.get(us.get("user_id"))
+                if not user:
+                    return await message.answer("Юзер не найден")
+            else:
+                user = await get_user_by_username(repo, us.get("username"))
+                if not user:
+                    return await message.answer("Юзер не найден")
+
+            if message.chat.type == ChatType.PRIVATE:
+                chat_user = None
+            else:
+                chat_user = await repo.chats_users.get_chat_user(
+                    user.id,
+                    message.chat.id,
+                )
+
+            is_self = False
+
+        text = Texts.gettext(
+            "SHORT_BAG_TEXTS",
+            context={
+                "is_self": is_self,
+                "user": user,
+                "chat_user": chat_user,
+                "tree": formatted_heght_tree(user.len_tree)
+            },
+        )
         await msg.answer(
-            Texts.gettext("KB_INFO_CHAT"), reply_markup=main_keyboard_inline()
+            text=text, reply_markup=main_keyboard_inline(id=msg.from_user.id)
         )
         return
 

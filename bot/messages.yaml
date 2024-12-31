@@ -88,6 +88,20 @@ BAG_TEXTS: |
   <b>🏃🏻‍♀️ Прогулки</b> <code>{{ chat_user.walks }}</code><nl>
   {% endif %}
 
+SHORT_BAG_TEXTS: |
+  <b>🦉 Краткая информация</b> {{ user.openmessage_link }}
+  <nl><nl>
+
+  💧 Вода | {{ user.water }} л <nl>
+  💸 Лепестки | {{ user.petals }} ед <nl>
+
+  {% if chat_user %} <nl>
+  <b>Статистика в текущем чате:</b> <nl>
+  <b>❄️ Снежинок</b> <code>{{ chat_user.foliage }}</code> <nl>
+  <b>🏃🏻‍♀️ Прогулки</b> <code>{{ chat_user.walks }}</code><nl>
+  {% endif %}
+
+
 TOP_USERS_GLOBAL: |
   <b>🎄 Статистика ёлочек мира:</b> <nl>
   {% for i, user in enumerate(users, start=1) %}
@@ -120,3 +134,6 @@ TOP_USERS_GLOBAL_SMOKINGS: |
   {% for i, user in enumerate(users, start=1) %}
   {{ formatted_top_number(i) }} {{ user.openmessage_link }} - {{ user.all_smokings }} <nl>
   {% endfor %}
+
+NOT_USER_BUTTON: |
+  Не для тебя моя веточка росла...
