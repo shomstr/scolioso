@@ -18,14 +18,14 @@ def formatted_heght_tree(height_tree: int) -> str:
 
 def formatted_next_walk(user: User):
     if check_walk(user):
-        return "пора гулять"
+        return "🌝 пора прогуляться "
 
     now = datetime.now()
     last_walk = user.last_walk
 
     next_walk = last_walk + timedelta(hours=walk_time(user))
 
-    return f'до след прогулки {str(next_walk - now).split(".")[0]}'
+    return f'🌚 нужно отдохнуть [{str(next_walk - now).split(".")[0]}]'
 
 
 def formatted_top_number(number: int) -> str:

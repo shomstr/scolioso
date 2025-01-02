@@ -62,43 +62,45 @@ KB_INFO_CHAT: |
   <b>Ваш помощник по клавиатуре</b>
 
 BAG_TEXTS: |
-  <b>🦉 Информация о садовнике</b> {{ user.openmessage_link }}
-  <nl><nl>
+  <b>🦉 Древо-инфо</b> {{ user.openmessage_link }}
+  <nl>
+  <code>······················</code> <nl>
+  🌲 {{ tree }} см <i>Древо</i> <nl>
+  💧 {{ user.water }} л <i>Вода</i> <nl>
+  💸 {{ user.petals }} шт <i>Лепестки</i> <nl>
 
-  🌲 Древо | {{ tree }} <nl>
-  💧 Вода | {{ user.water }} л <nl>
-  💸 Лепестки | {{ user.petals }} ед <nl>
-
-  {% if is_self %}🍊 Мандарины | {{ user.apples }} шт <nl>
+  {% if is_self %} 🍊 {{ user.apples }} шт <i>Мандаринки</i>   
   {% endif %}
   {% if is_self and check_datetime(user.vip_to) %}
   💎 <b>Вип до <u>{{ datetime_to_str(user.vip_to) }}</u></b> <nl>
   {% endif %} <nl>
-  <b>👩🏻‍💻 Прогулка Инфо  [{{ walk_time }} часов] </b> <nl>
 
+  <code>······················</code> <nl>
+  
   {% if check_walk %}
-  <b>✨ {{ next_walk }}</b>
+  <b>{{ next_walk }} </b> 
   {% else %}
-  <b>{{ next_walk }} </b>
+  <b>{{ next_walk }} </b> 
   {% endif %}
 
-  {% if chat_user %} <nl><nl>
-  <b>Статистика в текущем чате:</b> <nl>
-  <b>❄️ Снежинок</b> <code>{{ chat_user.foliage }}</code> <nl>
-  <b>🏃🏻‍♀️ Прогулки</b> <code>{{ chat_user.walks }}</code><nl>
+
+  {% if chat_user %} <nl>
+  <code>{{ chat_user.foliage }}</code> <i>❄️ Снежинок</i> <nl>
+  <code>{{ chat_user.walks }}</code> <i>👟 Прогулки</i> <nl>
   {% endif %}
 
 SHORT_BAG_TEXTS: |
   <b>🦉 Краткая информация</b> {{ user.openmessage_link }}
-  <nl><nl>
+  <nl>
 
-  💧 Вода | {{ user.water }} л <nl>
-  💸 Лепестки | {{ user.petals }} ед <nl>
+  <code>······················</code> <nl>
+  💧 {{ user.water }} л <i>Вода</i> <nl>
+  💸 {{ user.petals }} шт <i>Лепестки</i> <nl>
+  <code>······················</code> 
 
   {% if chat_user %} <nl>
-  <b>Статистика в текущем чате:</b> <nl>
-  <b>❄️ Снежинок</b> <code>{{ chat_user.foliage }}</code> <nl>
-  <b>🏃🏻‍♀️ Прогулки</b> <code>{{ chat_user.walks }}</code><nl>
+  <code>{{ chat_user.foliage }}</code> <i>❄️ Снежинок</i> <nl>
+  <code>{{ chat_user.walks }}</code> <i>👟 Прогулки</i> <nl>
   {% endif %}
 
 
