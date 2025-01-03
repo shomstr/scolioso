@@ -65,11 +65,11 @@ BAG_TEXTS: |
   <b>🦉 Древо-инфо</b> {{ user.openmessage_link }}
   <nl>
   <code>······················</code> <nl>
-  🌲 {{ tree }} см <i>Древо</i> <nl>
-  💧 {{ user.water }} л <i>Вода</i> <nl>
-  💸 {{ user.petals }} шт <i>Лепестки</i> <nl>
+  🌳 {{ tree }}.  <i>Древо</i> <nl>
+  💧 {{ user.water }} л.  <i>Вода</i> <nl>
+  🍃 {{ user.petals }} шт.  <i>Листва</i> <nl>
 
-  {% if is_self %} 🍊 {{ user.apples }} шт <i>Мандаринки</i>   
+  {% if is_self %} 🍊 {{ user.apples }} шт.  <i>Мандаринки</i>   
   {% endif %}
   {% if is_self and check_datetime(user.vip_to) %}
   💎 <b>Вип до <u>{{ datetime_to_str(user.vip_to) }}</u></b> <nl>
@@ -85,8 +85,8 @@ BAG_TEXTS: |
 
 
   {% if chat_user %} <nl>
-  <code>{{ chat_user.foliage }}</code> <i>❄️ Снежинок</i> <nl>
-  <code>{{ chat_user.walks }}</code> <i>👟 Прогулки</i> <nl>
+  <code>{{ chat_user.foliage }}</code> <i>   ❄️ Снежинок</i> <nl>
+  <code>{{ chat_user.walks }}</code> <i>   👟 Прогулки</i> <nl>
   {% endif %}
 
 SHORT_BAG_TEXTS: |
@@ -94,13 +94,13 @@ SHORT_BAG_TEXTS: |
   <nl>
 
   <code>······················</code> <nl>
-  💧 {{ user.water }} л <i>Вода</i> <nl>
-  💸 {{ user.petals }} шт <i>Лепестки</i> <nl>
+  💧 {{ user.water }} л.  <i>Вода</i> <nl>
+  🍃 {{ user.petals }} шт.  <i>Листва</i> <nl>
   <code>······················</code> 
 
   {% if chat_user %} <nl>
-  <code>{{ chat_user.foliage }}</code> <i>❄️ Снежинок</i> <nl>
-  <code>{{ chat_user.walks }}</code> <i>👟 Прогулки</i> <nl>
+  <code>{{ chat_user.foliage }}</code>   <i>❄️ Снежинок</i> <nl>
+  <code>{{ chat_user.walks }}</code>   <i>👟 Прогулки</i> <nl>
   {% endif %}
 
 

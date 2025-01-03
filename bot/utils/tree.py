@@ -13,7 +13,7 @@ def formatted_heght_tree(height_tree: int) -> str:
         return f"{height_tree:_} м".replace("_", " ")
 
     height_tree = round(height_tree / 1000, 1)
-    return f"{height_tree:_} км".replace("_", " ")
+    return f"{height_tree:_} см".replace("_", " ")
 
 
 def formatted_next_walk(user: User):
