@@ -29,8 +29,8 @@ dp = Dispatcher(storage=storage, fsm_strategy=FSMStrategy.USER_IN_CHAT)
 
 DEFAULT_TZ = pytz.timezone("Europe/Moscow")
 
-WALK_WITHOUT_VIP = 6
-WALK_WITH_VIP = 4
+WALK_WITHOUT_VIP = 360
+WALK_WITH_VIP = 180
 
 MIN_WATER_WALK = 2
 MAX_WATER_WALK = 5

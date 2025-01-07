@@ -13,31 +13,31 @@ def formatted_heght_tree(height_tree: int) -> str:
         return f"{height_tree:_} м".replace("_", " ")
 
     height_tree = round(height_tree / 1000, 1)
-    return f"{height_tree:_} см".replace("_", " ")
+    return f"{height_tree:_} км".replace("_", " ")
 
 
-def formatted_next_walk(user: User):
+def formatted_next_walk(user: User) -> str:
     if check_walk(user):
         return "🌝 пора прогуляться "
 
     now = datetime.now()
     last_walk = user.last_walk
 
-    next_walk = last_walk + timedelta(hours=walk_time(user))
+    next_walk = last_walk + timedelta(minutes=walk_time(user))
 
-    return f'🌚 нужно отдохнуть [{str(next_walk - now).split(".")[0]}]'
+    remaining_time = next_walk - now
+    remaining_minutes = remaining_time.total_seconds() // 60  # Получаем полные минуты
 
+    return f'🌚 нужно отдохнуть [{int(remaining_minutes)} мин]'
 
 def formatted_top_number(number: int) -> str:
     medals = {1: "🏅", 2: "🥈", 3: "🥉"}
     return medals.get(number, f" {number}.")
 
-
-def walk_time(user: User):
+def walk_time(user: User) -> int:
     if check_datetime(user.vip_to):
         return WALK_WITH_VIP
     return WALK_WITHOUT_VIP
-
 
 def check_walk(user: User) -> bool:
     now = datetime.now()
@@ -46,8 +46,6 @@ def check_walk(user: User) -> bool:
     if not last_walk:
         return True
 
-    next_walk = last_walk + timedelta(hours=walk_time(user))
+    next_walk = last_walk + timedelta(minutes=walk_time(user))
 
-    if next_walk - now < timedelta(seconds=1):
-        return True
-    return False
+    return next_walk <= now  # Если время следующей прогулки уже наступило
