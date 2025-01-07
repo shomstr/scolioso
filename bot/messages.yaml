@@ -106,20 +106,10 @@ SHORT_BAG_TEXTS: |
 
 TOP_USERS_GLOBAL: |
   <b>🎄 Статистика ёлочек мира:</b> <nl>
-  {% set user_found = false %}
   {% for i, user in enumerate(users, start=1) %}
-    {{ formatted_top_number(i) }} {{ user.openmessage_link }} - {{ formatted_heght_tree(user.len_tree) }}
-    {% if user.id == user_id %}
-      (Ваше место: {{ formatted_top_number(i) }})
-      {% set user_found = true %}
-    {% endif %}
-    <nl>
+  {{ formatted_top_number(i) }} {{ user.openmessage_link }} - {{ formatted_heght_tree(user.len_tree) }} <nl>
   {% endfor %}
   
-  {% if not user_found %}
-      Вас нет в этом топе.
-  {% endif %}
-
 TOP_USERS_CHAT: |
   <b>🎄 Статистика ёлочек леса <u>{{ chat.title | e }}</u></b> <nl>
   {% for i, user in enumerate(users, start=1) %}
