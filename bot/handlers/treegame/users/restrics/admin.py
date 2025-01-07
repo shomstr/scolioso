@@ -23,6 +23,7 @@ async def rem_com(message: Message, bot: Bot):
 
     if result.status == 'creator' or result.status == 'administrator':
         await bot_commands.del_commands(bot)
+        await bot_commands.set_commands(bot)
         await message.answer(f"успешно убраны команды")
     else:
         await message.answer("Вы не являетесь создателем или администратором данного чата")
