@@ -115,6 +115,7 @@ async def walk(message: Message, user: User, chat_user: ChatUser) -> Any:
     return None
 
 
+
 @router.message(
     or_f(
         FullmatchWithArgs(*MainMenuVars.WATERING.value, user=False),
