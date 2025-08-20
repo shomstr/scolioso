@@ -1,32 +1,38 @@
-
 import cv2
 import numpy as np
-import matplotlib.pyplot as plt
+from io import BytesIO
 from sklearn.metrics.pairwise import euclidean_distances
 
 class ScoliosisAnalyzer:
-    def init(self):
+    def __init__(self):  # Исправлено: init -> __init__
         self.landmarks = []
         self.asymmetry_score = 0
         self.curvature_angle = 0
         
-    def preprocess_image(self, image_path):
-        """Предварительная обработка изображения"""
-        image = cv2.imread(image_path)
-        if image is None:
-            raise ValueError("Не удалось загрузить изображение")
-        
-        # Конвертация в оттенки серого
-        gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-        
-        # Улучшение контраста
-        clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8,8))
-        enhanced = clahe.apply(gray)
-        
-        # Размытие для уменьшения шума
-        blurred = cv2.GaussianBlur(enhanced, (5, 5), 0)
-        
-        return image, blurred
+    def preprocess_image(self, image_bytes):
+        """Предварительная обработка изображения из байтов"""
+        try:
+            # Конвертация байтов в numpy array
+            nparr = np.frombuffer(image_bytes, np.uint8)
+            image = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+            
+            if image is None:
+                raise ValueError("Не удалось декодировать изображение")
+            
+            # Конвертация в оттенки серого
+            gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+            
+            # Улучшение контраста
+            clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8,8))
+            enhanced = clahe.apply(gray)
+            
+            # Размытие для уменьшения шума
+            blurred = cv2.GaussianBlur(enhanced, (5, 5), 0)
+            
+            return image, blurred
+            
+        except Exception as e:
+            raise ValueError(f"Ошибка обработки изображения: {str(e)}")
     
     def detect_spine_landmarks(self, image, processed_image):
         """Обнаружение ключевых точек позвоночника"""
@@ -94,8 +100,8 @@ class ScoliosisAnalyzer:
         vec2 = np.array([bottom[0] - middle[0], bottom[1] - middle[1]])
         
         dot_product = np.dot(vec1, vec2)
-        mag1 = np.linalg.norm(vec1)  # Исправлено здесь
-        mag2 = np.linalg.norm(vec2)  # Исправлено здесь
+        mag1 = np.linalg.norm(vec1)
+        mag2 = np.linalg.norm(vec2)
         
         if mag1 == 0 or mag2 == 0:
             return 0
@@ -106,33 +112,31 @@ class ScoliosisAnalyzer:
         
         return angle_deg
     
-    def analyze_scoliosis(self, image_path):
-        """Основной метод анализа"""
+    def analyze_scoliosis(self, image_bytes):
+        """Основной метод анализа из байтов"""
         try:
             # Загрузка и предобработка изображения
-            original, processed = self.preprocess_image(image_path)
+            original, processed = self.preprocess_image(image_bytes)
             height, width = original.shape[:2]
             
             # Обнаружение ключевых точек
             landmarks = self.detect_spine_landmarks(original, processed)
             self.landmarks = landmarks
 
-# Расчет показателей
+            # Расчет показателей
             self.asymmetry_score = self.calculate_asymmetry(landmarks, width)
             self.curvature_angle = self.estimate_curvature(landmarks)
             
             # Определение вероятности сколиоза
             probability = self.calculate_probability()
             
-            return {
-                'asymmetry_score': self.asymmetry_score,
-                'curvature_angle': self.curvature_angle,
-                'probability': probability,
-                'landmarks_count': len(landmarks)
-            }
+            # Возвращаем только угол для GPT (остальное для отладки)
+            return self.curvature_angle
             
         except Exception as e:
-            return {'error': str(e)}
+            # Возвращаем 0 при ошибке вместо None
+            print(f"Ошибка анализа: {e}")
+            return 0
     
     def calculate_probability(self):
         """Расчет вероятности сколиоза"""
@@ -141,24 +145,3 @@ class ScoliosisAnalyzer:
             (max(0, self.curvature_angle - 10) * 1.5)
         ))
         return prob
-    
-    def visualize_results(self, image_path, output_path=None):
-        """Визуализация результатов анализа"""
-        original = cv2.imread(image_path)
-        if original is None:
-            return
-        
-        for point in self.landmarks:
-            cv2.circle(original, tuple(point), 5, (0, 255, 0), -1)
-        
-        height, width = original.shape[:2]
-        cv2.line(original, (width//2, 0), (width//2, height), (255, 0, 0), 2)
-        
-        text = f"Asymmetry: {self.asymmetry_score:.1f}% | Curvature: {self.curvature_angle:.1f}°"
-        cv2.putText(original, text, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 
-                   0.7, (0, 0, 255), 2)
-        
-        if output_path:
-            cv2.imwrite(output_path, original)
-        
-        return original
