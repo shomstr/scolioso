@@ -11,7 +11,7 @@ from bot.settings import settings
 from bot.keyboards.default import main2_menu
 from bot.handlers.treegame.users.gpt.gpt import gpt_thinks
 from bot.keyboards.inline import help_skip_keyboard
-
+ 
 router = Router(name=__name__)
 logger = logging.getLogger()
 
