@@ -9,6 +9,7 @@ from aiogram.fsm.context import FSMContext
 from bot.fsm.support import OprosState, DefaultPhoto
 from bot.settings import settings
 from bot.keyboards.default import main2_menu
+from aiogram.types import Message, ReplyKeyboardRemove
 from bot.handlers.treegame.users.gpt.gpt import gpt_thinks
 from bot.keyboards.inline import help_skip_keyboard
  
@@ -30,7 +31,7 @@ async def process_question(msg: Message, state: FSMContext, repo: Repositories):
     await repo.users.add_sex(user_id=msg.from_user.id, sex=sex)
     await state.update_data(sex=msg.text)
     await state.set_state(OprosState.age)
-    await msg.answer("Введите ваш возраст\n<blockquote>Пример: 36</blockquote>")
+    await msg.answer("Введите ваш возраст\n<blockquote>Пример: 36</blockquote>", reply_markup=ReplyKeyboardRemove())
 
 @router.message(OprosState.age, F.text)
 async def process_screenshot(msg: Message, state: FSMContext, repo: Repositories):
