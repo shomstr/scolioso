@@ -9,8 +9,8 @@ async def gpt_thinks(age, sex, ves, rost, zabol, angle):
         model = genai.GenerativeModel("gemini-2.0-flash-exp")
         
         # Преобразуем угол в строку для безопасной вставки
-        angle_str = str(angle) if angle is not None else "не определен"
-        if angle_str is None:
+        angle_str = str(angle) 
+        if angle is None:
             response = 'Отправьте другое фото'
         
         prompt = f"""
