@@ -8,17 +8,21 @@ async def gpt_thinks(age, sex, ves, rost, zabol, angle):
         genai.configure(api_key=settings.gemini.key)
         model = genai.GenerativeModel("gemini-2.0-flash-exp")
         
+        # Преобразуем угол в строку для безопасной вставки
+        angle_str = str(angle) if angle is not None else "не определен"
+        
         prompt = f"""
         На основе данных тебе нужно определить степень сколиоза и вывести методики для лечения. 
         Твой ответ - сообщение что будет видеть пользователь, поэтому общайся просто и кратко, не упоминая реальный градус сколиоза.
         тебе необходимо лишь сказать есть сколиоз или нет. при наличии необходимо предположить степень и выдать рекомендации. общайся на русском.
-        Данные: рост: {rost} вес: {ves} пол: {sex} заболевание: {zabol} возраст: {age} угол: {angle}"""
+        Данные: рост: {rost} вес: {ves} пол: {sex} заболевание: {zabol} возраст: {age} угол: {angle_str}"""
 
         response = model.generate_content(prompt)
         return response.text
         
     except Exception as e:
         return f"Произошла ошибка при анализе: {str(e)}"
+
 
 async def gpt_thinks_2(message):
     """Вторая функция для общения с Gemini"""
