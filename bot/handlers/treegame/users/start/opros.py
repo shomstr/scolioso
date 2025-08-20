@@ -76,26 +76,50 @@ async def process_screenshot(msg: Message, state: FSMContext,repo: Repositories)
 
 @router.message(OprosState.photo, F.photo)
 async def process_screenshot(msg: Message, state: FSMContext, bot: Bot):
-    try:
-        # Берем фото наибольшего размера
-        photo = msg.photo[-1]
-
         analyzer = ScoliosisAnalyzer()
+    # Берем фото наибольшего размера
+        photo = msg.photo[-1]
         
         # Скачиваем фото
         file = await bot.get_file(photo.file_id)
         file_bytes = await bot.download_file(file.file_path)
         
+        # Универсальный способ получения байтов
+        if hasattr(file_bytes, 'read'):
+            # Если это файловый объект (BufferedReader)
+            image_data = file_bytes.read()
+            file_bytes.close()  # Важно закрыть файл
+        elif hasattr(file_bytes, 'getvalue'):
+            # Если это BytesIO или подобный объект
+            image_data = file_bytes.getvalue()
+        elif isinstance(file_bytes, bytes):
+            # Если уже байты
+            image_data = file_bytes
+        else:
+            # Пробуем преобразовать в байты
+            image_data = bytes(file_bytes)
+        
         # Рассчитываем угол Кобба
-        results = analyzer.analyze_scoliosis(file_bytes.getvalue())
+        results = analyzer.analyze_scoliosis(image_data)
+
+        # Используем get_by_user_id вместо get_info_by_user_id
+        user = await repo.users.get_by_user_id(user_id=msg.from_user.id)
         
-        # Формируем ответ
-       
-        await msg.answer(results)
+        if not user:
+            await msg.answer("Информация не найдена. Пожалуйста, заполните информацию о себе. /start")
+            return
+            
+        answ = await gpt_thinks(
+            age=int(user.age), 
+            sex=user.sex, 
+            ves=user.ves, 
+            rost=user.rost, 
+            zabol=user.zabol, 
+            angle=results
+        )
+        
+        await msg.answer(answ)
         await state.clear()
-        
-    except Exception as e:
-        await msg.answer("Ошибка обработки фото. Попробуйте другое изображение.")
 
 
 @router.message(Command('photo'))
