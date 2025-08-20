@@ -8,6 +8,7 @@ from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
 from bot.fsm.support import OprosState, DefaultPhoto
 from bot.settings import settings
+from bot.keyboards.default import main2_menu
 from bot.handlers.treegame.users.gpt.gpt import gpt_thinks
 from bot.keyboards.inline import help_skip_keyboard
 
@@ -18,7 +19,7 @@ logger = logging.getLogger()
 @router.callback_query(F.data == "start_opros")
 async def support(call: types.CallbackQuery, state: FSMContext):
     await call.message.answer(
-        "Введите ваш пол"
+        "Введите ваш пол\n<blockquote>Пример: Мужской/Женский</blockquote>", reply_markup=main2_menu()
     )
     await state.set_state(OprosState.sex)
 
@@ -29,7 +30,7 @@ async def process_question(msg: Message, state: FSMContext, repo: Repositories):
     await repo.users.add_sex(user_id=msg.from_user.id, sex=sex)
     await state.update_data(sex=msg.text)
     await state.set_state(OprosState.age)
-    await msg.answer("Введите ваш возраст")
+    await msg.answer("Введите ваш возраст\n<blockquote>Пример: 36</blockquote>")
 
 @router.message(OprosState.age, F.text)
 async def process_screenshot(msg: Message, state: FSMContext, repo: Repositories):
@@ -38,7 +39,7 @@ async def process_screenshot(msg: Message, state: FSMContext, repo: Repositories
         await repo.users.add_age(user_id=msg.from_user.id, age=age)
         await state.update_data(age=age)
         await state.set_state(OprosState.ves)
-        await msg.answer("Введите ваш вес")
+        await msg.answer("Введите ваш вес\n<blockquote>Пример: 55 (без кг)</blockquote>")
     except ValueError:
         await msg.answer("Пожалуйста, введите число для возраста")
 
@@ -49,7 +50,7 @@ async def process_screenshot(msg: Message, state: FSMContext, repo: Repositories
         await repo.users.add_ves(user_id=msg.from_user.id, ves=ves)
         await state.update_data(ves=ves)
         await state.set_state(OprosState.rost)
-        await msg.answer("Введите ваш рост")
+        await msg.answer("Введите ваш рост\n<blockquote>Пример: 195 (без см)</blockquote>")
     except ValueError:
         await msg.answer("Пожалуйста, введите число для веса")
 
@@ -61,7 +62,7 @@ async def process_screenshot(msg: Message, state: FSMContext, repo: Repositories
     await repo.users.add_rost(user_id=msg.from_user.id, rost=age)
     await state.update_data(age=msg.text)
     await state.set_state(OprosState.zabol)
-    await msg.answer("Введите ваши хронические заболевания связанные со спиной")
+    await msg.answer("Введите ваши хронические заболевания связанные со спиной\n<blockquote>Пример: Гиперкифоз\n<i>Только связанное со спиной</i></blockquote>")
 
 @router.message(OprosState.zabol, F.text)
 async def process_screenshot(msg: Message, state: FSMContext,repo: Repositories):
@@ -69,7 +70,7 @@ async def process_screenshot(msg: Message, state: FSMContext,repo: Repositories)
     await repo.users.add_zab(user_id=msg.from_user.id, zab=age)
     await state.update_data(age=msg.text)
     await state.set_state(OprosState.photo)
-    await msg.answer("Пришлите фото")
+    await msg.answer("Пришлите фото\n<blockquote>Пример: Четкий снимок спины</blockquote>")
 
 
 @router.message(OprosState.photo, F.photo)
@@ -102,7 +103,7 @@ async def process_screenshot(msg: Message, state: FSMContext,repo: Repositories)
     await repo.users.add_zab(user_id=msg.from_user.id, zab=age)
     await state.update_data(age=msg.text)
     await state.set_state(DefaultPhoto.photo)
-    await msg.answer("Пришлите фото")
+    await msg.answer("Пришлите фото\n<blockquote>Пример: Четкий снимок спины</blockquote>")
 
 @router.message(DefaultPhoto.photo, F.photo)
 async def process_screenshot(msg: Message, state: FSMContext, bot: Bot, repo: Repositories):
@@ -137,7 +138,7 @@ async def process_screenshot(msg: Message, state: FSMContext, bot: Bot, repo: Re
         user = await repo.users.get_by_user_id(user_id=msg.from_user.id)
         
         if not user:
-            await msg.answer("Пользователь не найден. Пожалуйста, заполните информацию о себе.")
+            await msg.answer("Информация не найдена. Пожалуйста, заполните информацию о себе. /start")
             return
             
         answ = await gpt_thinks(

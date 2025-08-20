@@ -11,3 +11,13 @@ main_menu = ReplyKeyboardMarkup(
     resize_keyboard=True,
     selective=True,
 )
+
+
+main2_menu = ReplyKeyboardMarkup(
+    keyboard=[
+        [KeyboardButton(text='Мужской'), KeyboardButton(text='Женский')],
+        
+    ],
+    resize_keyboard=True,
+    selective=True,
+)
