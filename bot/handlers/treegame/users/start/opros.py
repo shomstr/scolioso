@@ -104,7 +104,6 @@ async def process_screenshot(msg: Message, state: FSMContext,repo: Repositories)
     await state.set_state(DefaultPhoto.photo)
     await msg.answer("Пришлите фото")
 
-
 @router.message(DefaultPhoto.photo, F.photo)
 async def process_screenshot(msg: Message, state: FSMContext, bot: Bot, repo: Repositories):
     try:
@@ -116,12 +115,20 @@ async def process_screenshot(msg: Message, state: FSMContext, bot: Bot, repo: Re
         file = await bot.get_file(photo.file_id)
         file_bytes = await bot.download_file(file.file_path)
         
-        # ПРАВИЛЬНОЕ чтение байтов
-        # Способ 1: Если file_bytes - BufferedReader
-        image_data = file_bytes.read()
-        
-        # Способ 2: Альтернативный вариант
-        # image_data = await file_bytes.read() если это async объект
+        # Универсальный способ получения байтов
+        if hasattr(file_bytes, 'read'):
+            # Если это файловый объект (BufferedReader)
+            image_data = file_bytes.read()
+            file_bytes.close()  # Важно закрыть файл
+        elif hasattr(file_bytes, 'getvalue'):
+            # Если это BytesIO или подобный объект
+            image_data = file_bytes.getvalue()
+        elif isinstance(file_bytes, bytes):
+            # Если уже байты
+            image_data = file_bytes
+        else:
+            # Пробуем преобразовать в байты
+            image_data = bytes(file_bytes)
         
         # Рассчитываем угол Кобба
         results = analyzer.analyze_scoliosis(image_data)
