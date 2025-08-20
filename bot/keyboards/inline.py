@@ -31,7 +31,7 @@ def start_keyboard_inline():
     kb = InlineKeyboardBuilder()
 
     kb.button(text="☎️ Помощь", callback_data="help"),
-    kb.button(text="🌲 Начать игру", callback_data="start_game")
+    kb.button(text="➡️ Продолжить", callback_data="start_game")
 
     kb.adjust(1)
     return kb.as_markup(resize_keyboard=True)
@@ -52,6 +52,15 @@ def help_skip_keyboard():
 
     kb.button(text="Отмена", callback_data="support_cancel"),
     kb.button(text="Пропустить", callback_data="support_skip"),
+
+    kb.adjust(1)
+    return kb.as_markup(resize_keyboard=True)
+
+
+def asdf():
+    kb = InlineKeyboardBuilder()
+
+    kb.button(text="❓️ Начать опрос", callback_data="start_opros")
 
     kb.adjust(1)
     return kb.as_markup(resize_keyboard=True)

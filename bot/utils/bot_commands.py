@@ -16,6 +16,10 @@ async def set_commands(bot: Bot):
         BotCommand(
             command = 'help',
             description = 'Помощь'
+        ),
+        BotCommand(
+            command='photo',
+            description='Запросить рассчет'
         )
     ]
 
