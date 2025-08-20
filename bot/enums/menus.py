@@ -35,7 +35,7 @@ re_keyboard = re.compile(
 )
 re_help = re.compile(r"(помощь|хелп)", re.IGNORECASE)
 re_gpt = re.compile(r"дерево\s*(.*)", re.IGNORECASE)
-re_gpt_2 = re.compile(r"древо\s*(.*)", re.IGNORECASE)
+re_gpt_2 = re.compile(r"сколи\s*(.*)", re.IGNORECASE)
 
 re_pref = r'([!./]|)'
 re_add_note = re.compile(r'^\+ветка\s+([\s\S]+?)\n([\s\S]+)', re.IGNORECASE)
