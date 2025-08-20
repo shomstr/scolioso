@@ -10,6 +10,8 @@ async def gpt_thinks(age, sex, ves, rost, zabol, angle):
         
         # Преобразуем угол в строку для безопасной вставки
         angle_str = str(angle) if angle is not None else "не определен"
+        if angle_str is None:
+            response = 'Отправьте другое фото'
         
         prompt = f"""
         Проанализируй данные пациента и дай краткие рекомендации по сколиозу.
