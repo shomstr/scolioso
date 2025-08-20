@@ -75,7 +75,7 @@ async def process_screenshot(msg: Message, state: FSMContext,repo: Repositories)
 
 
 @router.message(OprosState.photo, F.photo)
-async def process_screenshot(msg: Message, state: FSMContext, bot: Bot):
+async def process_screenshot(msg: Message, state: FSMContext, bot: Bot, repo: Repositories):
         analyzer = ScoliosisAnalyzer()
     # Берем фото наибольшего размера
         photo = msg.photo[-1]
